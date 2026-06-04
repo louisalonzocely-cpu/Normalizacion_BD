@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!--
+  ╔══════════════════════════════════════════════════════════════════════╗
+  ║           CARTELERA INTERACTIVA — PLANTILLA BASE                    ║
+  ║       Normalización y Diccionario de Datos · SENA ADSO             ║
+  ╠══════════════════════════════════════════════════════════════════════╣
+  ║  INSTRUCCIONES GENERALES                                            ║
+  ║  ─────────────────────────────────────────────────────────────────  ║
+  ║  1. Lean cada comentario <!-- ... --> antes de escribir contenido.  ║
+  ║  2. Nunca borren las etiquetas HTML, solo editen el TEXTO dentro.   ║
+  ║  3. Usen Live Server en VS Code para previsualizar en tiempo real.  ║
+  ║  4. Al terminar, súbanlo a GitHub Pages (Settings → Pages).        ║
+  ╚══════════════════════════════════════════════════════════════════════╝
+  -->
+
+  <!-- ✏️ Cambia esto: título que aparece en la pestaña del navegador -->
+  <title>Mi Cartelera BD — SENA ADSO</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <style>
+    /* ──────────── VARIABLES — no modificar ──────────── */
+    :root {
+      --bg:        hwb(269 2% 50%);
+      --surface:   #0f1a11;
+      --card:      #142016;
+      --border:    #1e3022;
+      --green:     #d7def4;
+      --green-lt:  #5dc72e;
+      --green-dim: #c2bbe8;
+      --text:      #dce8dd;
+      --text-2:    #8aab8e;
+      --text-3:    #4d6b51;
+      --code-bg:   #72a6c2;
+      --accent:    #a8ff78;
+      --warn:      #f5a623;
+      --red:       #e05252;
+      --white:     #f0f7f1;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; font-weight: 300; line-height: 1.75; }
+    ::selection { background: var(--green); color: #000; }
+
+    #progress-bar { position: fixed; top: 0; left: 0; height: 3px; width: 0%; background: linear-gradient(90deg, var(--green), var(--accent)); z-index: 9999; transition: width .1s; }
+
+    nav { position: fixed; top: 3px; left: 0; right: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 2.5rem; height: 56px; background: rgba(8,14,9,.88); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); z-index: 1000; }
+    .nav-logo { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; color: var(--green); text-decoration: none; }
+    .nav-logo span { color: var(--text-2); font-weight: 400; font-family: 'DM Sans', sans-serif; font-size: .8rem; margin-left: .5rem; }
+    .nav-links { display: flex; }
+    .nav-links a { color: var(--text-3); font-size: .78rem; text-decoration: none; padding: .3rem .75rem; border-radius: 4px; letter-spacing: .05em; text-transform: uppercase; transition: color .2s, background .2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--green); background: rgba(208, 237, 193, 0.08); }
+
+    #hero { min-height: 100vh; display: grid; place-items: center; position: relative; overflow: hidden; padding: 6rem 2rem 4rem; }
+    .hero-grid-bg { position: absolute; inset: 0; background-image: linear-gradient(rgba(57,169,0,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(57,169,0,.06) 1px, transparent 1px); background-size: 48px 48px; mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%); }
+    .hero-glow { position: absolute; top: 30%; left: 50%; transform: translate(-50%,-50%); width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(57,169,0,.12) 0%, transparent 70%); pointer-events: none; }
+    .hero-content { position: relative; text-align: center; max-width: 800px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: .5rem; background: rgba(57,169,0,.1); border: 1px solid var(--green-dim); border-radius: 999px; padding: .35rem 1rem; font-size: .75rem; color: var(--green); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 2rem; }
+    .hero-title { font-family: 'Syne', sans-serif; font-size: clamp(2.5rem,8vw,5.5rem); font-weight: 800; line-height: 1.05; letter-spacing: -0.03em; color: var(--white); margin-bottom: 1.5rem; }
+    .hero-title .hl { color: var(--green); }
+    .hero-subtitle { font-size: 1.1rem; color: var(--text-2); max-width: 560px; margin: 0 auto 3rem; }
+    .hero-meta { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; }
+    .meta-chip { display: flex; align-items: center; gap: .5rem; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: .5rem 1rem; font-size: .82rem; color: var(--text-2); }
+    .meta-chip i { color: var(--green); font-size: .75rem; }
+    .scroll-hint { position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: .4rem; color: var(--text-3); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; animation: bounce 2s infinite; }
+    .scroll-hint i { font-size: 1rem; color: var(--green); }
+    @keyframes bounce { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(6px); } }
+
+    section { padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; }
+    .section-tag { font-family: 'JetBrains Mono', monospace; font-size: .7rem; color: var(--green); letter-spacing: .15em; text-transform: uppercase; display: flex; align-items: center; gap: .6rem; margin-bottom: 1rem; }
+    .section-tag::after { content: ''; flex: 1; max-width: 60px; height: 1px; background: var(--green-dim); }
+    .section-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(1.8rem,4vw,2.8rem); letter-spacing: -0.03em; color: var(--white); margin-bottom: .75rem; line-height: 1.1; }
+    .section-lead { font-size: 1.05rem; color: var(--text-2); max-width: 680px; margin-bottom: 3rem; }
+
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.75rem; transition: border-color .3s, transform .3s; }
+    .card:hover { border-color: var(--green-dim); transform: translateY(-3px); }
+    .card-icon { font-size: 1.5rem; color: var(--green); margin-bottom: 1rem; }
+    .card-title { font-family: 'Syne', sans-serif; font-size: 1.05rem; font-weight: 700; color: var(--white); margin-bottom: .5rem; }
+    .card p { font-size: .9rem; color: var(--text-2); }
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; }
+
+    .callout { border-left: 3px solid; border-radius: 0 8px 8px 0; padding: 1.25rem 1.5rem; margin: 1.5rem 0; background: rgba(0,0,0,.2); }
+    .callout.info  { border-color: var(--green); }
+    .callout.warn  { border-color: var(--warn); }
+    .callout.error { border-color: var(--red); }
+    .callout-label { font-family: 'JetBrains Mono', monospace; font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; margin-bottom: .5rem; opacity: .7; }
+    .callout.info .callout-label  { color: var(--green); }
+    .callout.warn .callout-label  { color: var(--warn); }
+    .callout.error .callout-label { color: var(--red); }
+    .callout p { font-size: .92rem; }
+
+    .table-wrap { overflow-x: auto; margin: 1.5rem 0; border-radius: 10px; border: 1px solid var(--border); }
+    table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+    thead tr { background: var(--green); }
+    thead th { color: #000; font-weight: 600; padding: .75rem 1rem; text-align: left; font-family: 'JetBrains Mono', monospace; font-size: .78rem; letter-spacing: .04em; }
+    tbody tr { border-bottom: 1px solid var(--border); transition: background .2s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: rgba(57,169,0,.04); }
+    tbody td { padding: .65rem 1rem; color: var(--text-2); vertical-align: top; }
+    tbody td.pk { color: var(--green); font-family: 'JetBrains Mono', monospace; font-weight: 600; }
+    tbody td.fk { color: var(--warn); font-family: 'JetBrains Mono', monospace; }
+    tbody td.code { font-family: 'JetBrains Mono', monospace; font-size: .82rem; }
+    .badge { display: inline-block; border-radius: 4px; padding: .1rem .45rem; font-family: 'JetBrains Mono', monospace; font-size: .68rem; font-weight: 600; }
+    .badge-pk  { background: rgba(57,169,0,.15); color: var(--green); border: 1px solid var(--green-dim); }
+    .badge-fk  { background: rgba(245,166,35,.12); color: var(--warn); border: 1px solid rgba(245,166,35,.3); }
+    .badge-yes { background: rgba(57,169,0,.1); color: var(--green); }
+    .badge-no  { background: rgba(224,82,82,.1); color: var(--red); }
+
+    /* Fila de instrucción dentro de tabla */
+    .row-hint td { color: var(--text-3); font-style: italic; font-size: .82rem; border: 1px dashed var(--border) !important; background: rgba(57,169,0,.02); }
+
+    .tabs-nav { display: flex; gap: .5rem; margin-bottom: 0; border-bottom: 1px solid var(--border); overflow-x: auto; }
+    .tab-btn { background: none; border: none; cursor: pointer; font-family: 'Syne', sans-serif; font-size: .9rem; font-weight: 700; color: var(--text-3); padding: .85rem 1.5rem; border-bottom: 3px solid transparent; white-space: nowrap; transition: color .2s, border-color .2s; margin-bottom: -1px; }
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active { color: var(--green); border-bottom-color: var(--green); }
+    .tab-panel { display: none; padding: 2.5rem 0 0; animation: fadeUp .3s ease; }
+    .tab-panel.active { display: block; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    .fn-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem; }
+    .fn-number { font-family: 'Syne', sans-serif; font-size: 5rem; font-weight: 800; color: rgba(57,169,0,.08); line-height: 1; user-select: none; flex-shrink: 0; }
+    .fn-info { flex: 1; }
+    .fn-title { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 800; color: var(--white); margin-bottom: .5rem; }
+    .fn-rule { display: inline-flex; align-items: center; gap: .5rem; background: rgba(57,169,0,.08); border: 1px solid var(--green-dim); border-radius: 6px; padding: .4rem .9rem; font-family: 'JetBrains Mono', monospace; font-size: .78rem; color: var(--green); margin-bottom: 1rem; }
+
+    .sql-block { background: var(--code-bg); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin: 1.5rem 0; }
+    .sql-header { display: flex; align-items: center; justify-content: space-between; padding: .6rem 1rem; background: rgba(0,0,0,.3); border-bottom: 1px solid var(--border); }
+    .sql-label { font-family: 'JetBrains Mono', monospace; font-size: .68rem; color: var(--text-3); letter-spacing: .1em; }
+    .sql-dots { display: flex; gap: 5px; }
+    .sql-dots span { width: 10px; height: 10px; border-radius: 50%; }
+    .sql-dots span:nth-child(1) { background: #ff5f57; }
+    .sql-dots span:nth-child(2) { background: #febc2e; }
+    .sql-dots span:nth-child(3) { background: #28c840; }
+    .sql-block pre { padding: 1.25rem 1.5rem; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: .82rem; line-height: 1.7; color: #a3be8c; }
+    .sql-block pre .kw  { color: #81a1c1; font-weight: 600; }
+    .sql-block pre .ty  { color: #8fbcbb; }
+    .sql-block pre .cn  { color: #ebcb8b; }
+    .sql-block pre .cm  { color: #4d6b51; font-style: italic; }
+    .sql-block pre .tb  { color: #88c0d0; }
+
+    .steps { display: flex; flex-direction: column; gap: 0; position: relative; }
+    .steps::before { content: ''; position: absolute; left: 1.15rem; top: 2.5rem; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--green), transparent); }
+    .step { display: flex; gap: 1.5rem; padding: 0 0 2.5rem; }
+    .step-num { width: 2.3rem; height: 2.3rem; border-radius: 50%; flex-shrink: 0; background: var(--green); color: #000; font-family: 'Syne', sans-serif; font-weight: 800; font-size: .85rem; display: grid; place-items: center; position: relative; z-index: 1; }
+    .step-body { flex: 1; }
+    .step-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; color: var(--white); margin-bottom: .4rem; }
+    .step-body p { font-size: .9rem; color: var(--text-2); }
+
+    .dict-section { margin-bottom: 3rem; }
+    .dict-table-title { font-family: 'JetBrains Mono', monospace; font-size: .82rem; font-weight: 600; color: var(--green); background: rgba(57,169,0,.08); border: 1px solid var(--green-dim); display: inline-block; padding: .35rem .9rem; border-radius: 6px; margin-bottom: 1rem; }
+
+    .team-grid { display: flex; flex-wrap: wrap; gap: 1rem; }
+    .team-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.25rem; display: flex; align-items: center; gap: .85rem; flex: 1; min-width: 200px; }
+    .team-avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--green-dim); display: grid; place-items: center; font-family: 'Syne', sans-serif; font-weight: 800; font-size: .9rem; color: var(--green); flex-shrink: 0; }
+    .team-name { font-size: .9rem; color: var(--white); font-weight: 500; }
+    .team-role { font-size: .75rem; color: var(--text-3); }
+
+    .reflection-card { background: linear-gradient(135deg, var(--card) 0%, rgba(57,169,0,.04) 100%); border: 1px solid var(--border); border-radius: 16px; padding: 2.5rem; position: relative; overflow: hidden; }
+    .reflection-card::before { content: '"'; position: absolute; top: -1rem; right: 1.5rem; font-size: 8rem; color: rgba(57,169,0,.06); font-family: 'Syne', sans-serif; font-weight: 800; line-height: 1; }
+    .reflection-text { font-size: 1.05rem; color: var(--text-2); line-height: 1.8; position: relative; }
+
+    .ref-list { list-style: none; display: flex; flex-direction: column; gap: .75rem; }
+    .ref-list li { display: flex; gap: 1rem; align-items: flex-start; padding: .85rem 1rem; background: var(--card); border: 1px solid var(--border); border-radius: 8px; font-size: .88rem; color: var(--text-2); }
+    .ref-list li i { color: var(--green); margin-top: .2rem; flex-shrink: 0; }
+
+    footer { border-top: 1px solid var(--border); padding: 2.5rem 2rem; text-align: center; color: var(--text-3); font-size: .82rem; }
+    footer .sena-tag { color: var(--green); font-family: 'JetBrains Mono', monospace; font-weight: 600; }
+
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity .6s ease, transform .6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 768px) { nav { padding: 0 1rem; } .nav-links { display: none; } section { padding: 3.5rem 1.25rem; } }
+  </style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<!-- ════════════════════════════════════════════════════
+     NAVEGACIÓN
+     ════════════════════════════════════════════════════
+  ✏️  Cambia el nombre corto del proyecto en .nav-logo
+  ✏️  Los enlaces ya apuntan a cada sección por su id=""
+     No los muevas, pero puedes cambiar el texto visible
+     ════════════════════════════════════════════════════ -->
+<nav id="navbar">
+  <a class="nav-logo" href="#hero">
+    <!-- ✏️ Nombre corto -->
+    StockTech
+    <span>Bases de Datos</span>
+  </a>
+  <div class="nav-links">
+    <a href="#intro">Introducción</a>
+    <a href="#caso">Caso Práctico</a>
+    <a href="#normalizacion">Normalización</a>
+    <a href="#diccionario">Diccionario</a>
+    <a href="#conclusiones">Conclusiones</a>
+    <a href="#referencias">Referencias</a>
+  </div>
+</nav>
+
+
+<!-- ════════════════════════════════════════════════════
+     SECCIÓN 1 — PORTADA (HERO)
+     ════════════════════════════════════════════════════
+  QUÉ VA AQUÍ:
+  La presentación de la cartelera: título, programa,
+  semestre y breve descripción del tema.
+
+  INSTRUCCIONES:
+  ✏️  hero-badge   → Escribe tu ficha y centro de formación
+  ✏️  hero-title   → El título principal de tu cartelera.
+                     Usa <span class="hl"> para destacar
+                     una palabra en verde.
+  ✏️  hero-subtitle → Una oración que resuma el tema.
+  ✏️  meta-chip    → Programa, semestre/año, ciudad.
+     ════════════════════════════════════════════════════ -->
+<div id="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content reveal">
+
+    <div class="hero-badge">
+      <i class="fas fa-database"></i>
+      <!-- ✏️ Ejemplo: SENA · Ficha 228118 · Regional Bolívar -->
+    </div>
+
+    <h1 class="hero-title">
+      <!-- ✏️ Ejemplo:
+           Normalización<br>& <span class="hl">Diccionario</span><br>de Datos
+      -->
+    </h1>
+
+    <p class="hero-subtitle">
+      <!-- ✏️ Una frase que describa de qué trata tu cartelera -->
+    </p>
+
+    <div class="hero-meta">
+      <div class="meta-chip">
+        <i class="fas fa-code-branch"></i>
+        <!-- ✏️ Programa -->
+      </div>
+      <div class="meta-chip">
+        <i class="fas fa-calendar-alt"></i>
+        <!-- ✏️ Semestre y año -->
+      </div>
+      <div class="meta-chip">
+        <i class="fas fa-map-marker-alt"></i>
+        <!-- ✏️ Ciudad -->
+      </div>
+    </div>
+
+  </div>
+  <div class="scroll-hint"><i class="fas fa-chevron-down"></i> scroll</div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════════
+     SECCIÓN 2 — EQUIPO
+     ════════════════════════════════════════════════════
+  QUÉ VA AQUÍ:
+  Los integrantes del grupo con su nombre y rol dentro
+  del proyecto (quién investigó qué).
+
+  INSTRUCCIONES:
+  ✏️  team-avatar → Escribe las 2 iniciales del nombre
+  ✏️  team-name   → Nombre completo
+  ✏️  team-role   → Rol que cumplió en el proyecto
+                    (Ej: "Investigación 1FN y 2FN")
+  ✏️  Duplica <div class="team-card">...</div>
+      para agregar más integrantes.
+     ════════════════════════════════════════════════════ -->
+<section id="equipo">
+  <div class="reveal">
+    <div class="section-tag"><i class="fas fa-users"></i> Integrantes</div>
+    <h2 class="section-title">Quiénes somos</h2>
+
+    <div class="team-grid">
+
+      <div class="team-card">
+        <div class="team-avatar"><!-- ✏️ Iniciales --></div>
+        <div>
+          <div class="team-name"><!-- ✏️ Nombre completo --></div>
+          <div class="team-role"><!-- ✏️ Rol en el proyecto --></div>
+        </div>
+      </div>
+
+      <div class="team-card">
+        <div class="team-avatar"><!-- ✏️ Iniciales --></div>
+        <div>
+          <div class="team-name"><!-- ✏️ Nombre completo --></div>
+          <div class="team-role"><!-- ✏️ Rol en el proyecto --></div>
+        </div>
+      </div>
+
+      <div class="team-card">
+        <div class="team-avatar"><!-- ✏️ Iniciales --></div>
+        <div>
+          <div class="team-name"><!-- ✏️ Nombre completo --></div>
+          <div class="team-role"><!-- ✏️ Rol en el proyecto --></div>
+        </div>
+      </div>
+
+      <!-- ✏️ Agrega o elimina tarjetas según el tamaño de tu grupo -->
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════
+     SECCIÓN 3 — INTRODUCCIÓN
+     ════════════════════════════════════════════════════
+  QUÉ VA AQUÍ:
+  La explicación de POR QUÉ existe la normalización,
+  cuál es el problema que resuelve y quién la propuso.
+
+  INSTRUCCIONES:
+  ✏️  section-lead → Párrafo introductorio con el
+                     contexto general del tema.
+
+  TARJETAS (grid-3): cada una explica un concepto clave.
+  ✏️  card 1 → ¿Qué es la redundancia de datos?
+  ✏️  card 2 → ¿Qué son las anomalías de BD?
+  ✏️  card 3 → ¿Qué es la integridad referencial?
+  Para el ícono visita: fontawesome.com/icons
+
+  CALLOUT INFO: la definición formal de normalización.
+  ✏️  Escribe la definición con tus propias palabras.
+      Incluye: autor, año, propósito.
+     ════════════════════════════════════════════════════ -->
+<section id="intro">
+  <div class="reveal">
+    <div class="section-tag"><i class="fas fa-book-open"></i> Contexto</div>
+    <h2 class="section-title">¿Por qué normalizar?</h2>
+
+    <p class="section-lead">
+      <!-- ✏️ Escribe aquí el párrafo introductorio -->
+    </p>
+
+    <div class="grid-3">
+
+      <div class="card">
+        <div class="card-icon"><i class="fas fa-question"></i></div>
+        <!-- ✏️ Cambia el ícono, título y texto de cada tarjeta -->
+        <div class="card-title"><!-- ✏️ Concepto 1 --></div>
+        <p><!-- ✏️ Explicación breve del concepto 1 --></p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon"><i class="fas fa-question"></i></div>
+        <div class="card-title"><!-- ✏️ Concepto 2 --></div>
+        <p><!-- ✏️ Explicación breve del concepto 2 --></p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon"><i class="fas fa-question"></i></div>
+        <div class="card-title"><!-- ✏️ Concepto 3 --></div>
+        <p><!-- ✏️ Explicación breve del concepto 3 --></p>
+      </div>
+
+    </div>
+
+    <div class="callout info">
+      <div class="callout-label"><i class="fas fa-lightbulb"></i> Definición formal</div>
+      <p><!-- ✏️ Escribe aquí la definición de normalización con tus propias palabras --></p>
+    </div>
+
+    <!-- ════ ANOMALÍAS ════
+    QUÉ VA AQUÍ: Los tres tipos de anomalías que ocurren
+    cuando una base de datos NO está normalizada.
+
+    INSTRUCCIONES:
+    ✏️  callout warn  → Anomalía de INSERCIÓN: ¿qué es? ¿ejemplo?
+    ✏️  callout warn  → Anomalía de ACTUALIZACIÓN: ¿qué es?
+    ✏️  callout error → Anomalía de ELIMINACIÓN: ¿qué es?
+    ════════════════════ -->
+    <h3 style="font-family:'Syne',sans-serif; color:var(--white); margin: 2.5rem 0 1rem; font-size:1.2rem;">
+      Tipos de anomalías
+    </h3>
+
+    <div class="callout warn">
+      <div class="callout-label"><i class="fas fa-exclamation-triangle"></i> Anomalía de Inserción</div>
+      <p><!-- ✏️ Define la anomalía de inserción y da un ejemplo propio --></p>
+    </div>
+
+    <div class="callout warn">
+      <div class="callout-label"><i class="fas fa-exclamation-triangle"></i> Anomalía de Actualización</div>
+      <p><!-- ✏️ Define la anomalía de actualización y da un ejemplo propio --></p>
+    </div>
+
+    <div class="callout error">
+      <div class="callout-label"><i class="fas fa-times-circle"></i> Anomalía de Eliminación</div>
+      <p><!-- ✏️ Define la anomalía de eliminación y da un ejemplo propio --></p>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════
+     SECCIÓN 4 — CASO PRÁCTICO
+     ════════════════════════════════════════════════════
+  QUÉ VA AQUÍ:
+  El escenario real que eligió su grupo. Inventen o
+  tomen un caso colombiano (tienda, restaurante, clínica,
+  biblioteca, etc.) con una tabla de datos inicial
+  completamente SIN normalizar.
+
+  INSTRUCCIONES:
+  ✏️  section-title → Nombre de su caso (Ej: "FrutaFresh Barranquilla")
+  ✏️  section-lead  → Descripción del negocio y su problema.
+
+  TABLA INICIAL (sin normalizar):
+  ✏️  Definen sus propios campos en <th>
+  ✏️  Llenan al menos 4 filas de datos reales/inventados
+  ✏️  Deben incluir celdas con múltiples valores (viola 1FN)
+      y datos repetidos (viola 2FN/3FN)
+
+  CALLOUTS IDENTIFICACIÓN DE PROBLEMAS:
+  ✏️  callout warn  → Describe el problema de 1FN que ven
+  ✏️  callout error → Describe el problema de 2FN/3FN que ven
+     ════════════════════════════════════════════════════ -->
+<section id="caso">
+  <div class="reveal">
+    <div class="section-tag"><i class="fas fa-store"></i> Caso práctico</div>
+
+    <h2 class="section-title">
+      El caso: <span style="color:var(--green)"><!-- ✏️ Nombre de su caso --></span>
+    </h2>
+
+    <p class="section-lead">
+      <!-- ✏️ Describan el negocio: qué hace, dónde está, cuál es el problema de datos -->
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <!-- ✏️ Define tus propias columnas. Ejemplo mínimo: 8-10 campos -->
+            <th>campo_1</th>
+            <th>campo_2</th>
+            <th>campo_3</th>
+            <th>campo_4</th>
+            <th>campo_5</th>
+            <th>campo_6</th>
+            <!-- ✏️ Agrega o elimina columnas según tu caso -->
+          </tr>
+        </thead>
+        <tbody>
+          <!-- ✏️ Agrega mínimo 4 filas de datos.
+               Las celdas con múltiples valores sepáralas con coma.
+               Usa style="color:var(--warn)" para resaltar los problemas 1FN
+               y style="color:var(--red)" para los problemas de redundancia -->
+          <tr class="row-hint">
+            <td colspan="6">✏️ Reemplaza esta fila con tus datos reales</td>
+          </tr>
+          <tr class="row-hint">
+            <td colspan="6">✏️ Agrega al menos 4 filas de ejemplo</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid-2" style="margin-top:1.5rem">
+      <div class="callout warn">
+        <div class="callout-label"><i class="fas fa-exclamation-circle"></i> Problema 1FN detectado</div>
+        <p><!-- ✏️ Describe qué campos violan la 1FN en tu tabla y por qué --></p>
+      </div>
+      <div class="callout error">
+        <div class="callout-label"><i class="fas fa-times-circle"></i> Problema 2FN / 3FN detectado</div>
+        <p><!-- ✏️ Describe qué datos se repiten y qué dependencias incorrectas hay --></p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════
+     SECCIÓN 5 — FORMAS NORMALES (TABS)
+     ════════════════════════════════════════════════════
+  QUÉ VA AQUÍ:
+  La aplicación paso a paso de 1FN, 2FN y 3FN a su caso.
+  Cada pestaña (tab) contiene:
+    - La REGLA de esa forma normal
+    - Los PASOS que siguieron para aplicarla
+    - La TABLA resultante después de aplicarla
+    - Un BLOQUE SQL con el CREATE TABLE final (en 3FN)
+
+  NO muevas ni elimines los id="fn1", id="fn2", id="fn3"
+  porque el JavaScript los necesita para funcionar.
+     ════════════════════════════════════════════════════ -->
+<section id="normalizacion">
+  <div class="reveal">
+    <div class="section-tag"><i class="fas fa-sitemap"></i> Proceso</div>
+    <h2 class="section-title">Formas Normales</h2>
+    <p class="section-lead">
+      <!-- ✏️ Escribe una frase que presente el proceso de normalización de su caso -->
+    </p>
+
+    <div class="tabs-nav">
+      <button class="tab-btn active" onclick="showTab('fn1', this)">1FN — Primera</button>
+      <button class="tab-btn" onclick="showTab('fn2', this)">2FN — Segunda</button>
+      <button class="tab-btn" onclick="showTab('fn3', this)">3FN — Tercera</button>
+    </div>
+
+
+    <!-- ──────────── TAB: PRIMERA FORMA NORMAL ────────────
+    QUÉ VA AQUÍ:
+    ✏️  fn-title  → "Primera Forma Normal"
+    ✏️  fn-rule   → La regla de la 1FN en una línea
+    ✏️  párrafo   → Explicación de qué es la 1FN
+    ✏️  steps     → Los pasos concretos que siguieron
+                    para aplicar la 1FN a SU caso
+    ✏️  tabla     → La tabla resultante después de 1FN
+                    (con los encabezados y datos de su caso)
+    ✏️  callout   → Conclusión: ¿quedó en 1FN? ¿qué sigue?
+    ─────────────────────────────────────────────────────── -->
+    <div id="fn1" class="tab-panel active">
+      <div class="fn-header">
+        <div class="fn-number">1°</div>
+        <div class="fn-info">
+          <div class="fn-title"><!-- ✏️ Primera Forma Normal --></div>
+          <div class="fn-rule">
+            <i class="fas fa-check-circle"></i>
+            <!-- ✏️ Escribe la regla de la 1FN en una línea -->
+          </div>
+          <p style="color:var(--text-2); font-size:.95rem">
+            <!-- ✏️ Explica con tus propias palabras qué es la 1FN
+                     y qué problema resuelve en su caso -->
+          </p>
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title"><!-- ✏️ Título del paso 1 --></div>
+            <p><!-- ✏️ Descripción del paso 1 aplicado a su caso --></p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <div class="step-title"><!-- ✏️ Título del paso 2 --></div>
+            <p><!-- ✏️ Descripción del paso 2 aplicado a su caso --></p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <div class="step-title"><!-- ✏️ Título del paso 3 --></div>
+            <p><!-- ✏️ Descripción del paso 3 aplicado a su caso --></p>
+          </div>
+        </div>
+        <!-- ✏️ Agrega más pasos si tu caso los necesita -->
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <!-- ✏️ Escribe los encabezados de tu tabla en 1FN.
+                       Recuerda: la PK es compuesta, márcala con * -->
+              <th>campo_pk_1 *</th>
+              <th>campo_pk_2 *</th>
+              <th>campo_3</th>
+              <th>campo_4</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- ✏️ Llena con los datos de tu caso ya en 1FN.
+                     Usa class="pk" en las celdas de clave primaria -->
+            <tr class="row-hint">
+              <td colspan="4">✏️ Llena esta tabla con los datos de tu caso en 1FN</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout info">
+        <div class="callout-label"><i class="fas fa-check"></i> Resultado 1FN</div>
+        <p><!-- ✏️ Concluye: ¿qué lograron con la 1FN? ¿qué problema queda pendiente? --></p>
+      </div>
+    </div>
+
+
+    <!-- ──────────── TAB: SEGUNDA FORMA NORMAL ────────────
+    QUÉ VA AQUÍ:
+    ✏️  fn-rule   → La regla de la 2FN en una línea
+    ✏️  párrafo   → Qué es la 2FN y qué resuelve
+    ✏️  callout warn → Las dependencias parciales que
+                       encontraron en su tabla 1FN
+    ✏️  tablas    → Las tablas resultantes (grid-2 o grid-3).
+                    Una tabla por cada entidad separada.
+                    Incluye los datos de su caso.
+    ─────────────────────────────────────────────────────── -->
+    <div id="fn2" class="tab-panel">
+      <div class="fn-header">
+        <div class="fn-number">2°</div>
+        <div class="fn-info">
+          <div class="fn-title"><!-- ✏️ Segunda Forma Normal --></div>
+          <div class="fn-rule">
+            <i class="fas fa-check-circle"></i>
+            <!-- ✏️ Escribe la regla de la 2FN en una línea -->
+          </div>
+          <p style="color:var(--text-2); font-size:.95rem">
+            <!-- ✏️ Explica con tus propias palabras qué es la 2FN -->
+          </p>
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <div class="callout-label"><i class="fas fa-search"></i> Dependencias parciales en su tabla</div>
+        <p>
+          <!-- ✏️ Enumera las dependencias parciales que encontraron.
+                   Ejemplo de formato:
+                   nombre_cliente depende solo de nit_cliente, no de cod_producto. -->
+        </p>
+      </div>
+
+      <!-- ✏️ Crea una <div> por cada tabla resultante de la 2FN.
+               Usa la clase dict-table-title para el nombre de la tabla.
+               Agrega tantas tablas como entidades separaste. -->
+      <div class="grid-2" style="margin-top:2rem; gap:1.5rem">
+
+        <div>
+          <div class="dict-table-title"><!-- ✏️ NOMBRE_TABLA_1 --></div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <!-- ✏️ Encabezados de la tabla 1 -->
+                  <th>campo_pk</th><th>campo_2</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="row-hint"><td colspan="2">✏️ Llena con datos de tu caso</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div>
+          <div class="dict-table-title"><!-- ✏️ NOMBRE_TABLA_2 --></div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <!-- ✏️ Encabezados de la tabla 2 -->
+                  <th>campo_pk</th><th>campo_2</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="row-hint"><td colspan="2">✏️ Llena con datos de tu caso</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ✏️ Duplica estos bloques para más tablas -->
+
+      </div>
+    </div>
+
+
+    <!-- ──────────── TAB: TERCERA FORMA NORMAL ────────────
+    QUÉ VA AQUÍ:
+    ✏️  fn-rule   → La regla de la 3FN en una línea
+    ✏️  párrafo   → Qué es la 3FN y qué resuelve
+    ✏️  callout warn → La dependencia TRANSITIVA que
+                       encontraron en alguna tabla 2FN
+    ✏️  tablas    → Las tablas finales del modelo 3FN
+    ✏️  sql-block → El CREATE TABLE de TODAS sus tablas
+                    escritas en SQL para PostgreSQL
+    ─────────────────────────────────────────────────────── -->
+    <div id="fn3" class="tab-panel">
+      <div class="fn-header">
+        <div class="fn-number">3°</div>
+        <div class="fn-info">
+          <div class="fn-title"><!-- ✏️ Tercera Forma Normal --></div>
+          <div class="fn-rule">
+            <i class="fas fa-check-circle"></i>
+            <!-- ✏️ Escribe la regla de la 3FN en una línea -->
+          </div>
+          <p style="color:var(--text-2); font-size:.95rem">
+            <!-- ✏️ Explica con tus propias palabras qué es la 3FN -->
+          </p>
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <div class="callout-label"><i class="fas fa-search"></i> Dependencia transitiva detectada</div>
+        <p>
+          <!-- ✏️ Describe la cadena de dependencia transitiva que encontraron.
+                   Ejemplo de formato:
+                   En la tabla VENDEDORES:
+                   id_vendedor → cargo → salario_base
+                   (el salario depende del cargo, no del vendedor directamente) -->
+        </p>
+      </div>
+
+      <div class="grid-2" style="margin-top:2rem; gap:1.5rem">
+        <!-- ✏️ Pon aquí las tablas del modelo final 3FN -->
+        <div>
+          <div class="dict-table-title"><!-- ✏️ TABLA NUEVA (resultado de separar la transitiva) --></div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>campo_pk</th><th>campo_2</th></tr>
+              </thead>
+              <tbody>
+                <tr class="row-hint"><td colspan="2">✏️ Datos de la tabla nueva</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div>
+          <div class="dict-table-title"><!-- ✏️ TABLA ACTUALIZADA (la que se modificó) --></div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>campo_pk</th><th>campo_2</th><th>campo_fk (FK)</th></tr>
+              </thead>
+              <tbody>
+                <tr class="row-hint"><td colspan="3">✏️ Datos de la tabla actualizada</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ✏️ BLOQUE SQL:
+               Escribe aquí el CREATE TABLE de TODAS las tablas
+               de tu modelo final en PostgreSQL.
+               Respeta el orden: primero las tablas sin FK,
+               luego las que las referencian. -->
+      <div class="sql-block" style="margin-top:2rem">
+        <div class="sql-header">
+          <div class="sql-label">PostgreSQL · Modelo Final 3FN</div>
+          <div class="sql-dots"><span></span><span></span><span></span></div>
+        </div>
+        <pre>
+<span class="cm">-- ✏️ Escribe aquí el SQL de tu modelo completo</span>
+<span class="cm">-- Ejemplo de estructura:</span>
+
+<span class="kw">CREATE TABLE</span> <span class="tb">nombre_tabla</span> (
+  campo_pk    <span class="ty">VARCHAR(10)</span>    <span class="cn">PRIMARY KEY</span>,
+  campo_2     <span class="ty">VARCHAR(100)</span>   <span class="cn">NOT NULL</span>,
+  campo_fk    <span class="ty">VARCHAR(10)</span>    <span class="cn">REFERENCES</span> <span class="tb">otra_tabla</span>(campo_pk)
+);
+
+<span class="cm">-- ✏️ Continúa con las demás tablas...</span>
+        </pre>
+      </div>
+
+    </div><!-- fin fn3 -->
+
+  </div><!-- fin reveal -->
+</section>
+
+
+<!-- ════════════════════════════════════════════════════
+     SECCIÓN 6 — DICCIONARIO DE DATOS
+     ════════════════════════════════════════════════════
+  QUÉ VA AQUÍ:
+  La documentación formal de CADA campo de CADA tabla
+  del modelo final 3FN.
+
+  INSTRUCCIONES:
+  ✏️  section-lead → Qué es un diccionario de datos y
+                     para qué sirve (en sus propias palabras).
+  ✏️  callout info → La definición formal del diccionario.
+
+  POR CADA TABLA del modelo final:
+  ✏️  Duplica el bloque <div class="dict-section">
+  ✏️  Cambia el nombre en <div class="dict-table-title">
+  ✏️  Llena una fila por cada campo de la tabla con:
+      - Nombre del campo (usa class="code")
+      - Tipo de dato PostgreSQL
+      - Tamaño o precisión
+      - Nulo: <span class="badge badge-no">NO</span>
+              o <span class="badge badge-yes">SÍ</span>
+      - Clave: <span class="badge badge-pk">PK</span>
+               o dejar vacío
+      - FK: <span class="badge badge-fk">FK → TABLA</span>
+            o dejar —
+      - CHECK o DEFAULT si aplica
+      - Descripción del campo
+     ════════════════════════════════════════════════════ -->
+<section id="diccionario">
+  <div class="reveal">
+    <div class="section-tag"><i class="fas fa-book"></i> Documentación</div>
+    <h2 class="section-title">Diccionario de Datos</h2>
+
+    <p class="section-lead">
+      <!-- ✏️ Explica qué es un diccionario de datos y por qué es importante -->
+    </p>
+
+    <div class="callout info">
+      <div class="callout-label"><i class="fas fa-lightbulb"></i> Definición</div>
+      <p><!-- ✏️ Escribe la definición formal de diccionario de datos --></p>
+    </div>
+
+
+    <!-- ════ TABLA 1 del diccionario ════
+         ✏️ Repite este bloque por cada tabla de tu modelo -->
+    <div class="dict-section" style="margin-top:2.5rem">
+      <div class="dict-table-title">
+        <i class="fas fa-table" style="margin-right:.4rem"></i>
+        <!-- ✏️ NOMBRE_TABLA -->
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Campo</th><th>Tipo</th><th>Tamaño</th>
+              <th>Nulo</th><th>Clave</th><th>FK</th>
+              <th>CHECK / Default</th><th>Descripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- ✏️ Una fila por cada campo de esta tabla.
+                     Ejemplo de fila completa:
+            <tr>
+              <td class="code">id_producto</td>
+              <td class="code">VARCHAR</td>
+              <td>10</td>
+              <td><span class="badge badge-no">NO</span></td>
+              <td><span class="badge badge-pk">PK</span></td>
+              <td>—</td>
+              <td>—</td>
+              <td>Código único del producto</td>
+            </tr>
+            -->
+            <tr class="row-hint">
+              <td colspan="8">✏️ Reemplaza con los campos de tu primera tabla</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ════ TABLA 2 del diccionario ════ -->
+    <div class="dict-section">
+      <div class="dict-table-title">
+        <i class="fas fa-table" style="margin-right:.4rem"></i>
+        <!-- ✏️ NOMBRE_TABLA_2 -->
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Campo</th><th>Tipo</th><th>Tamaño</th>
+              <th>Nulo</th><th>Clave</th><th>FK</th>
+              <th>CHECK / Default</th><th>Descripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="row-hint">
+              <td colspan="8">✏️ Reemplaza con los campos de tu segunda tabla</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ✏️ Copia y pega los bloques anteriores para cada tabla adicional -->
+
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════
+     SECCIÓN 7 — CONCLUSIONES
+     ════════════════════════════════════════════════════
+  QUÉ VA AQUÍ:
+  La reflexión genuina del equipo: qué aprendieron,
+  qué les fue difícil, cómo aplicarían esto en un
+  proyecto real.
+
+  INSTRUCCIONES:
+  ✏️  reflection-text → Mínimo 3 párrafos escritos por
+                         el equipo con sus propias palabras.
+                         NO copiar de internet.
+  ✏️  Tarjetas (grid-3) → Una lección clave por integrante.
+                           Que cada uno aporte la suya.
+     ════════════════════════════════════════════════════ -->
+<section id="conclusiones">
+  <div class="reveal">
+    <div class="section-tag"><i class="fas fa-lightbulb"></i> Cierre</div>
+    <h2 class="section-title">Conclusiones del equipo</h2>
+
+    <div class="reflection-card">
+      <div class="reflection-text">
+        <p><!-- ✏️ Párrafo 1: ¿Qué aprendieron sobre normalización? --></p>
+        <br>
+        <p><!-- ✏️ Párrafo 2: ¿Qué fue lo más difícil del proceso? --></p>
+        <br>
+        <p><!-- ✏️ Párrafo 3: ¿Cómo aplicarían esto en un proyecto real de software? --></p>
+      </div>
+    </div>
+
+    <div class="grid-3" style="margin-top:2rem">
+      <div class="card">
+        <div class="card-icon"><i class="fas fa-star"></i></div>
+        <div class="card-title"><!-- ✏️ Lección del integrante 1 --></div>
+        <p><!-- ✏️ En máximo 2 oraciones: la lección más importante --></p>
+      </div>
+      <div class="card">
+        <div class="card-icon"><i class="fas fa-star"></i></div>
+        <div class="card-title"><!-- ✏️ Lección del integrante 2 --></div>
+        <p><!-- ✏️ En máximo 2 oraciones: la lección más importante --></p>
+      </div>
+      <div class="card">
+        <div class="card-icon"><i class="fas fa-star"></i></div>
+        <div class="card-title"><!-- ✏️ Lección del integrante 3 --></div>
+        <p><!-- ✏️ En máximo 2 oraciones: la lección más importante --></p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════
+     SECCIÓN 8 — REFERENCIAS
+     ════════════════════════════════════════════════════
+  QUÉ VA AQUÍ:
+  Las fuentes que consultaron para construir la cartelera.
+  Formato APA. Mínimo 3 referencias.
+
+  INSTRUCCIONES:
+  ✏️  Duplica <li> por cada referencia.
+  ✏️  Usa <i class="fas fa-book"> para libros
+      y <i class="fas fa-globe"> para páginas web.
+  ✏️  Formato APA: Apellido, N. (Año). Título. Editorial.
+     ════════════════════════════════════════════════════ -->
+<section id="referencias">
+  <div class="reveal">
+    <div class="section-tag"><i class="fas fa-book-reader"></i> Bibliografía</div>
+    <h2 class="section-title">Referencias</h2>
+
+    <ul class="ref-list">
+
+      <li>
+        <i class="fas fa-book"></i>
+        <!-- ✏️ Referencia 1 en formato APA -->
+      </li>
+
+      <li>
+        <i class="fas fa-book"></i>
+        <!-- ✏️ Referencia 2 en formato APA -->
+      </li>
+
+      <li>
+        <i class="fas fa-globe"></i>
+        <!-- ✏️ Referencia web (incluye URL y fecha de consulta) -->
+      </li>
+
+      <!-- ✏️ Agrega más <li> según las fuentes que usaron -->
+
+    </ul>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════
+     FOOTER
+     ✏️  Actualiza con el nombre real del programa,
+         la ficha y el año de su cohorte.
+     ════════════════════════════════════════════════════ -->
+<footer>
+  <p>
+    <span class="sena-tag">SENA</span> · Centro de Comercio y Servicios · Regional Bolívar<br>
+    <!-- ✏️ Tecnología en ADSO · Ficha XXXXXX · Año -->
+  </p>
+</footer>
+
+
+<!-- ════ JAVASCRIPT — NO MODIFICAR ════ -->
+<script>
+  window.addEventListener('scroll', () => {
+    const pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+    document.getElementById('progress-bar').style.width = pct + '%';
+  });
+
+  const sections = document.querySelectorAll('section[id], div[id="hero"]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(a => a.classList.remove('active'));
+        const link = document.querySelector(`.nav-links a[href="#${entry.target.id}"]`);
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { threshold: 0.35 });
+  sections.forEach(s => observer.observe(s));
+
+  const revealObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+  function showTab(id, btn) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+  }
+</script>
+
+</body>
+</html>
