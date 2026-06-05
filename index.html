@@ -36,7 +36,7 @@
       --green-lt:  #5dc72e;
       --green-dim: #f4f3f5;
       --text:      #dce8dd;
-      --text-2:    #acf0e5;
+      --text-2:    #f8fbfa;
       --text-3:    #ced8cf;
       --code-bg:   #72a6c2;
       --accent:    #a8ff78;
@@ -70,6 +70,7 @@
     .hero-meta { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; }
     .meta-chip { display: flex; align-items: center; gap: .5rem; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: .5rem 1rem; font-size: .82rem; color: var(--text-2); }
     .meta-chip i { color: var(--green); font-size: .75rem; }
+    .meta-chip a { text-decoration: none; color: var(--text);}
     .scroll-hint { position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: .4rem; color: var(--text-3); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; animation: bounce 2s infinite; }
     .scroll-hint i { font-size: 1rem; color: var(--green); }
     @keyframes bounce { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(6px); } }
@@ -82,9 +83,10 @@
 
     .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.75rem; transition: border-color .3s, transform .3s; }
     .card:hover { border-color: var(--green-dim); transform: translateY(-3px); }
-    .card-icon { font-size: 1.5rem; color: var(--green); margin-bottom: 1rem; }
+    .card-icon { font-size: 1.5rem; color: var(--green); margin-bottom: 1rem; text-align: center;}
     .card-title { font-family: 'Syne', sans-serif; font-size: 1.05rem; font-weight: 700; color: var(--white); margin-bottom: .5rem; }
-    .card p { font-size: .9rem; color: var(--text-2); }
+    .card p { font-size: .9rem; color: var(--text-2); text-align: center; }
+    .card h4 { text-align: center;}
     .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; }
     .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; }
 
@@ -127,7 +129,7 @@
     @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
     .fn-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem; }
-    .fn-number { font-family: 'Syne', sans-serif; font-size: 5rem; font-weight: 800; color: rgba(57,169,0,.08); line-height: 1; user-select: none; flex-shrink: 0; }
+    .fn-number { font-family: 'Syne', sans-serif; font-size: 5rem; font-weight: 800; color: rgba(210, 221, 205, 0.08); line-height: 1; user-select: none; flex-shrink: 0; }
     .fn-info { flex: 1; }
     .fn-title { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 800; color: var(--white); margin-bottom: .5rem; }
     .fn-rule { display: inline-flex; align-items: center; gap: .5rem; background: rgba(57,169,0,.08); border: 1px solid var(--green-dim); border-radius: 6px; padding: .4rem .9rem; font-family: 'JetBrains Mono', monospace; font-size: .78rem; color: var(--green); margin-bottom: 1rem; }
@@ -200,8 +202,8 @@
     <span>Bases de Datos</span>
   </a>
   <div class="nav-links">
-    <a href="#intro">Introducción</a>
     <a href="#equipo">Quienes somos</a>
+    <a href="#intro">Introducción</a>
     <a href="#caso">Caso Práctico</a>
     <a href="#normalizacion">Normalización</a>
     <a href="#diccionario">Diccionario</a>
@@ -241,13 +243,14 @@
     </h3>
 
     <p class="hero-subtitle">
-      Aprendemos a estructurar, limpiar y organizar la información aplicando las formas normales para evitar redundancia y garantizar la integridad de los datos.
+      Aprendemos a estructurar, limpiar y organizar la información aplicando las 
+      formas normales para evitar redundancia y garantizar la integridad de los datos.
     </p>
 
     <div class="hero-meta">
       <div class="meta-chip">
         <i class="fas fa-code-branch"></i>
-        Análisis y Desarrollo de Software
+          <a href="https://github.com/louisalonzocely-cpu/Normalizacion_BD/tree/developer2">Repositorio GitHub</a>
       </div>
       <div class="meta-chip">
         <i class="fas fa-calendar-alt"></i>
@@ -289,7 +292,7 @@
       <div class="team-card">
         <div class="team-avatar"><img src="/avatar.png" alt="luis"></div>
         <div>
-          <div class="team-name"><p>Luis Alonso Cely</p></div>
+          <div class="team-name"><p>Luis Alonso Cely Arias</p></div>
           <div class="team-role"><p>Backend DEV</p></div>
         </div>
       </div>
@@ -337,36 +340,45 @@
 
     <p class="section-lead">
       <!-- ✏️ Escribe aquí el párrafo introductorio -->
+       Este proceso es fundamental en bases de datos transaccionales donde 
+       las actualizaciones son frecuentes, equilibrando la eficiencia de las 
+       escrituras con la consistencia de la información.
     </p>
 
     <div class="grid-3">
 
       <div class="card">
-        <div class="card-icon"><i class="fas fa-question"></i></div>
+        <div class="card-icon"><i class="fas fa-question" style="color: #024f58"></i></div>
         <!-- ✏️ Cambia el ícono, título y texto de cada tarjeta -->
-        <div class="card-title"><!-- ✏️ Concepto 1 --></div>
-          <h2>¿Qué es la redundancia de datos?</h2>
+        <div class="card-title"><h4>¿Qué es la redundancia de datos?</h4></div>
           <p>La redundancia de datos en una base de datos se refiere al
              almacenamiento repetido de la misma información en diferentes lugares dentro del sistema.</p>
       </div>
 
       <div class="card">
-        <div class="card-icon"><i class="fas fa-question"></i></div>
-        <div class="card-title"><!-- ✏️ Concepto 2 --></div>
-        <p><!-- ✏️ Explicación breve del concepto 2 --></p>
+        <div class="card-icon"><i class="fas fa-question" style="color: #024f58;"></i></div>
+        <div class="card-title"><h4>¿Qué son las anomalías de BD?</h4></div>
+        <p>Inconsistencias o errores que surgen durante las operaciones de actualización, 
+          inserción o eliminación, generalmente debido a un esquema mal diseñado o fallas de integridad.</p>
       </div>
 
       <div class="card">
-        <div class="card-icon"><i class="fas fa-question"></i></div>
-        <div class="card-title"><!-- ✏️ Concepto 3 --></div>
-        <p><!-- ✏️ Explicación breve del concepto 3 --></p>
+        <div class="card-icon"><i class="fas fa-question" style="color: #024f58;"></i></div>
+        <div class="card-title"><h4>¿Qué es la integridad referencial?</h4></div>
+        <p>Es un conjunto de reglas en las bases de datos relacionales que garantiza que las relaciones 
+          entre tablas permanezcan consistentes y válidas, asegurando que las claves foráneas apunten únicamente 
+          a claves primarias existentes o sean nulas.</p>
       </div>
 
     </div>
 
     <div class="callout info">
       <div class="callout-label"><i class="fas fa-lightbulb"></i> Definición formal</div>
-      <p><!-- ✏️ Escribe aquí la definición de normalización con tus propias palabras --></p>
+      <p>Es un proceso de diseño que organiza la información en tablas específicas para reducir la redundancia 
+        y mejorar la integridad de los datos.  Este método divide tablas grandes en otras más pequeñas y establece 
+        relaciones mediante claves, lo que permite eliminar inconsistencias y anomalías en las actualizaciones.
+        <br>El objetivo principal es asegurar que cada dato se almacene una sola vez, facilitando así el mantenimiento, 
+        la eficiencia de las consultas y el crecimiento del sistema sin duplicaciones innecesarias.</p>
     </div>
 
     <!-- ════ ANOMALÍAS ════
@@ -384,17 +396,20 @@
 
     <div class="callout warn">
       <div class="callout-label"><i class="fas fa-exclamation-triangle"></i> Anomalía de Inserción</div>
-      <p><!-- ✏️ Define la anomalía de inserción y da un ejemplo propio --></p>
+      <p>Ocurren cuando no es posible añadir datos a la base de datos porque faltan valores requeridos por 
+        otras columnas (por ejemplo, no poder registrar un autor si no tiene libros asociados). </p>
     </div>
 
     <div class="callout warn">
       <div class="callout-label"><i class="fas fa-exclamation-triangle"></i> Anomalía de Actualización</div>
-      <p><!-- ✏️ Define la anomalía de actualización y da un ejemplo propio --></p>
+      <p>Surgen cuando la información redundante debe actualizarse en múltiples registros; si se modifica solo una instancia, 
+        se generan inconsistencias en los datos.</p>
     </div>
 
     <div class="callout error">
       <div class="callout-label"><i class="fas fa-times-circle"></i> Anomalía de Eliminación</div>
-      <p><!-- ✏️ Define la anomalía de eliminación y da un ejemplo propio --></p>
+      <p>Se producen al borrar un registro, lo que provoca la pérdida involuntaria de información vital sobre otras entidades 
+        relacionadas (por ejemplo, perder datos de un estudiante al eliminar su última clase). </p>
     </div>
 
   </div>
@@ -522,7 +537,7 @@
     ─────────────────────────────────────────────────────── -->
     <div id="fn1" class="tab-panel active">
       <div class="fn-header">
-        <div class="fn-number">1°</div>
+        <div class="fn-number" style="color: #657eff;">1°</div>
         <div class="fn-info">
           <div class="fn-title"><!-- ✏️ Primera Forma Normal --></div>
           <div class="fn-rule">
@@ -602,7 +617,7 @@
     ─────────────────────────────────────────────────────── -->
     <div id="fn2" class="tab-panel">
       <div class="fn-header">
-        <div class="fn-number">2°</div>
+        <div class="fn-number" style="color: #657eff;">2°</div>
         <div class="fn-info">
           <div class="fn-title"><!-- ✏️ Segunda Forma Normal --></div>
           <div class="fn-rule">
@@ -681,7 +696,7 @@
     ─────────────────────────────────────────────────────── -->
     <div id="fn3" class="tab-panel">
       <div class="fn-header">
-        <div class="fn-number">3°</div>
+        <div class="fn-number" style="color: #657eff;">3°</div>
         <div class="fn-info">
           <div class="fn-title"><!-- ✏️ Tercera Forma Normal --></div>
           <div class="fn-rule">
