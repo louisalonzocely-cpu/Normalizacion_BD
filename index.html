@@ -6,15 +6,15 @@
 
   <!--
   ╔══════════════════════════════════════════════════════════════════════╗
-  ║           CARTELERA INTERACTIVA — PLANTILLA BASE                    ║
-  ║       Normalización y Diccionario de Datos · SENA ADSO             ║
+  ║           CARTELERA INTERACTIVA — PLANTILLA BASE                     ║
+  ║       Normalización y Diccionario de Datos · SENA ADSO               ║
   ╠══════════════════════════════════════════════════════════════════════╣
-  ║  INSTRUCCIONES GENERALES                                            ║
-  ║  ─────────────────────────────────────────────────────────────────  ║
-  ║  1. Lean cada comentario <!-- ... --> antes de escribir contenido.  ║
-  ║  2. Nunca borren las etiquetas HTML, solo editen el TEXTO dentro.   ║
-  ║  3. Usen Live Server en VS Code para previsualizar en tiempo real.  ║
-  ║  4. Al terminar, súbanlo a GitHub Pages (Settings → Pages).        ║
+  ║  INSTRUCCIONES GENERALES                                             ║
+  ║  ─────────────────────────────────────────────────────────────────   ║
+  ║  1. Lean cada comentario antes de escribir contenido.                ║
+  ║  2. Nunca borren las etiquetas HTML, solo editen el TEXTO dentro.    ║
+  ║  3. Usen Live Server en VS Code para previsualizar en tiempo real.   ║
+  ║  4. Al terminar, súbanlo a GitHub Pages (Settings → Pages).          ║
   ╚══════════════════════════════════════════════════════════════════════╝
   -->
 
@@ -282,12 +282,11 @@
   <div class="hero-content reveal">
 
     <div class="hero-badge">
-      <i class="fas fa-database" style="color: #0dc107;"></i>
-       SENA · Ficha 3230489 · Regional Bolívar
+        🛢️ SENA · Ficha 3230489 · Regional Bolívar
     </div>
 
     <h3 class="hero-title">
-      Normalización & Diccionario de Datos
+      Normalización & <em style="color: #12a2af;">Diccionario</em> de Datos
     </h3>
 
     <p class="hero-subtitle">
@@ -301,12 +300,10 @@
           <a href="https://github.com/louisalonzocely-cpu/Normalizacion_BD/tree/developer2">Repositorio GitHub</a>
       </div>
       <div class="meta-chip">
-        <i class="fas fa-calendar-alt" style="color: var(--orange);"></i>
-        05 · 06 · 2026
+           📅 05 · 06 · 2026
       </div>
       <div class="meta-chip">
-        <i class="fas fa-map-marker-alt" style="color: red;"></i>
-        Cartagena
+        📍 Cartagena
       </div>
     </div>
 
@@ -512,7 +509,7 @@
   completamente SIN normalizar.
 
   INSTRUCCIONES:
-  ✏️  section-title → Nombre de su caso (Ej: "FrutaFresh Barranquilla")
+  ✏️  section-title → Nombre de su caso (Ej: "BrunosFruit Barranquilla")
   ✏️  section-lead  → Descripción del negocio y su problema.
 
   TABLA INICIAL (sin normalizar):
@@ -530,11 +527,11 @@
     <div class="section-tag"><i class="fas fa-store"></i> Caso práctico</div>
 
     <h2 class="section-title">
-      El caso: <span style="color:var(--cyan)">FrutaFresh Cartagena</span>
+      El caso: <span style="color:var(--cyan)">BrunosFruit Cartagena</span>
     </h2>
 
     <p class="section-lead">
-      FrutaFresh es una distribuidora de frutas y verduras ubicada en el Mercado de Bazurto, Cartagena. 
+      BrunosFruit es una distribuidora de frutas y verduras ubicada en el Mercado de Bazurto, Cartagena. 
       Lleva sus pedidos en un cuaderno con una tabla que mezcla clientes, productos y rutas de reparto 
       en un solo registro. Al no tener una base de datos normalizada, la misma información se repite 
       varias veces, generando inconsistencias y dificultando las consultas.
@@ -638,7 +635,7 @@
     <div class="section-tag"><i class="fas fa-sitemap"></i> Proceso</div>
     <h2 class="section-title">Formas Normales</h2>
     <p class="section-lead">
-      Aplicamos las tres formas normales a la tabla de pedidos de FrutaFresh Cartagena para eliminar redundancias, garantizar la integridad de los datos y facilitar las consultas sobre clientes, productos, vendedores y rutas de reparto.
+      Aplicamos las tres formas normales a la tabla de pedidos de BrunosFruit Cartagena para eliminar redundancias, garantizar la integridad de los datos y facilitar las consultas sobre clientes, productos, vendedores y rutas de reparto.
     </p>
 
     <div class="tabs-nav">
@@ -1462,15 +1459,19 @@
     </div>
 
     <div class="grid-3" style="margin-top:2rem">
-      <div class="card">
-        <div class="card-icon"><i class="fas fa-star"></i></div>
-        <div class="card-title"><!-- ✏️ Lección del integrante 1 --></div>
-        <p><!-- ✏️ En máximo 2 oraciones: la lección más importante --></p>
+      <div class="card" style="text-align:center">
+        <div style="width:60px;height:60px;border-radius:50%;overflow:hidden;margin:0 auto 0.5rem;border:2px solid var(--cyan);">
+          <img src="avatar.png" alt="Luis" style="width:100%;height:100%;object-fit:cover;">
+        </div>
+        <div class="card-title">Leccion Luis Alonso</div>
+        <p>La normalización me enseñó a dividir tablas grandes en estructuras más pequeñas aplicando 1FN, 2FN y 3FN, eliminando redundancias y dependencias para garantizar la integridad de los datos en un sistema transaccional real.</p>
       </div>
-      <div class="card">
-        <div class="card-icon"><i class="fas fa-star"></i></div>
+      <div class="card" style="text-align:center">
+        <div style="width:60px;height:60px;border-radius:50%;overflow:hidden;margin:0 auto 0.5rem;border:2px solid var(--cyan);">
+          <img src="avatarjuan.jpeg" alt="Juan" style="width:100%;height:100%;object-fit:cover;">
+        </div>
         <div class="card-title">Leccion Juan Sebastian</div>
-        <p><!-- ✏️ En máximo 2 oraciones: la lección más importante --></p>
+        <p>El diccionario de datos me permitió comprender cómo documentar cada campo, tipo y restricción del modelo, facilitando la comunicación entre el equipo técnico y de negocio para mantener la coherencia del esquema.</p>
       </div>
     </div>
 
@@ -1500,17 +1501,17 @@
 
       <li>
         <i class="fas fa-book"></i>
-        <!-- ✏️ Referencia 1 en formato APA -->
+        Elmasri, R. &amp; Navathe, S. B. (2016). <em>Fundamentals of Database Systems</em> (7th ed.). Pearson.
       </li>
 
       <li>
         <i class="fas fa-book"></i>
-        <!-- ✏️ Referencia 2 en formato APA -->
+        Coronel, C. &amp; Morris, S. (2019). <em>Database Systems: Design, Implementation, &amp; Management</em> (13th ed.). Cengage Learning.
       </li>
 
       <li>
         <i class="fas fa-globe"></i>
-        <!-- ✏️ Referencia web (incluye URL y fecha de consulta) -->
+          <a href="https://docs.oracle.com/en/database/oracle/oracle-database/12.2/cncpt/oracle-relational-structures.html"><em>Oracle Database Concepts</em></a>
       </li>
 
       <!-- ✏️ Agrega más <li> según las fuentes que usaron -->
