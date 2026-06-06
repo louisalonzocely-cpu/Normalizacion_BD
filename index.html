@@ -38,7 +38,7 @@
       --text:      #dce8dd;
       --text-2:    #f8fbfa;
       --text-3:    #ced8cf;
-      --code-bg:   #72a6c2;
+      --code-bg:   #7a345b;
       --lime:    #a8ff78;
       --orange:      #f5a623;
       --beige:       #cbbebe;
@@ -287,7 +287,7 @@
     </div>
 
     <h3 class="hero-title">
-      Normalización de Base de Datos
+      Normalización & Diccionario de Datos
     </h3>
 
     <p class="hero-subtitle">
@@ -530,37 +530,75 @@
     <div class="section-tag"><i class="fas fa-store"></i> Caso práctico</div>
 
     <h2 class="section-title">
-      El caso: <span style="color:var(--cyan)"><!-- ✏️ Nombre de su caso --></span>
+      El caso: <span style="color:var(--cyan)">FrutaFresh Cartagena</span>
     </h2>
 
     <p class="section-lead">
-      <!-- ✏️ Describan el negocio: qué hace, dónde está, cuál es el problema de datos -->
+      FrutaFresh es una distribuidora de frutas y verduras ubicada en el Mercado de Bazurto, Cartagena. 
+      Lleva sus pedidos en un cuaderno con una tabla que mezcla clientes, productos y rutas de reparto 
+      en un solo registro. Al no tener una base de datos normalizada, la misma información se repite 
+      varias veces, generando inconsistencias y dificultando las consultas.
     </p>
 
     <div class="table-wrap">
       <table>
         <thead>
           <tr>
-            <!-- ✏️ Define tus propias columnas. Ejemplo mínimo: 8-10 campos -->
-            <th>campo_1</th>
-            <th>campo_2</th>
-            <th>campo_3</th>
-            <th>campo_4</th>
-            <th>campo_5</th>
-            <th>campo_6</th>
-            <!-- ✏️ Agrega o elimina columnas según tu caso -->
+            <th>id_pedido</th>
+            <th>cliente</th>
+            <th>teléfono</th>
+            <th>dirección</th>
+            <th style="color:var(--orange)">productos</th>
+            <th style="color:var(--orange)">cantidades</th>
+            <th>total</th>
+            <th style="color:var(--beige)">vendedor</th>
+            <th style="color:var(--beige)">barrio_ruta</th>
           </tr>
         </thead>
         <tbody>
-          <!-- ✏️ Agrega mínimo 4 filas de datos.
-               Las celdas con múltiples valores sepáralas con coma.
-               Usa style="color:var(--orange)" para resaltar los problemas 1FN
-               y style="color:var(--beige)" para los problemas de redundancia -->
-          <tr class="row-hint">
-            <td colspan="6">✏️ Reemplaza esta fila con tus datos reales</td>
+          <tr>
+            <td class="pk">P001</td>
+            <td>Doña María</td>
+            <td>3001234567</td>
+            <td>Calle 1 #2-3</td>
+            <td style="color:var(--orange)">Manzanas, Peras</td>
+            <td style="color:var(--orange)">10, 5</td>
+            <td>$45.000</td>
+            <td style="color:var(--beige)">Carlos M.</td>
+            <td style="color:var(--beige)">Olaya Herrera</td>
           </tr>
-          <tr class="row-hint">
-            <td colspan="6">✏️ Agrega al menos 4 filas de ejemplo</td>
+          <tr>
+            <td class="pk">P002</td>
+            <td>Don José</td>
+            <td>3007654321</td>
+            <td>Cra 4 #5-6</td>
+            <td style="color:var(--orange)">Limones, Naranjas</td>
+            <td style="color:var(--orange)">8, 12</td>
+            <td>$36.000</td>
+            <td style="color:var(--beige)">Ana L.</td>
+            <td style="color:var(--beige)">Bosque</td>
+          </tr>
+          <tr>
+            <td class="pk">P003</td>
+            <td>Doña María</td>
+            <td>3001234567</td>
+            <td>Calle 1 #2-3</td>
+            <td style="color:var(--orange)">Papas, Zanahorias, Cebollas</td>
+            <td style="color:var(--orange)">15, 10, 8</td>
+            <td>$52.000</td>
+            <td style="color:var(--beige)">Carlos M.</td>
+            <td style="color:var(--beige)">Olaya Herrera</td>
+          </tr>
+          <tr>
+            <td class="pk">P004</td>
+            <td>Surtifruta</td>
+            <td>3059876543</td>
+            <td>Av Kennedy #10-20</td>
+            <td style="color:var(--orange)">Manzanas, Naranjas</td>
+            <td style="color:var(--orange)">20, 30</td>
+            <td>$85.000</td>
+            <td style="color:var(--beige)">Pedro R.</td>
+            <td style="color:var(--beige)">Centro</td>
           </tr>
         </tbody>
       </table>
@@ -569,11 +607,11 @@
     <div class="grid-2" style="margin-top:1.5rem">
       <div class="callout warn">
         <div class="callout-label"><i class="fas fa-exclamation-circle"></i> Problema 1FN detectado</div>
-        <p><!-- ✏️ Describe qué campos violan la 1FN en tu tabla y por qué --></p>
+        <p><strong>productos</strong> y <strong>cantidades</strong> almacenan múltiples valores separados por coma en una sola celda. Esto viola la atomicidad de la 1FN: no podemos consultar ni actualizar un producto individual sin procesar toda la cadena de texto.</p>
       </div>
       <div class="callout error">
         <div class="callout-label"><i class="fas fa-times-circle"></i> Problema 2FN / 3FN detectado</div>
-        <p><!-- ✏️ Describe qué datos se repiten y qué dependencias incorrectas hay --></p>
+        <p><strong>cliente, teléfono</strong> y <strong>dirección</strong> se repiten para cada pedido (Doña María aparece dos veces con los mismos datos). Además, <strong>vendedor</strong> y <strong>barrio_ruta</strong> se repiten asociados al mismo vendedor, generando dependencias parciales y transitivas.</p>
       </div>
     </div>
 
@@ -600,7 +638,7 @@
     <div class="section-tag"><i class="fas fa-sitemap"></i> Proceso</div>
     <h2 class="section-title">Formas Normales</h2>
     <p class="section-lead">
-      <!-- ✏️ Escribe una frase que presente el proceso de normalización de su caso -->
+      Aplicamos las tres formas normales a la tabla de pedidos de FrutaFresh Cartagena para eliminar redundancias, garantizar la integridad de los datos y facilitar las consultas sobre clientes, productos, vendedores y rutas de reparto.
     </p>
 
     <div class="tabs-nav">
@@ -625,14 +663,16 @@
       <div class="fn-header">
         <div class="fn-number" style="color: #657eff;">1°</div>
         <div class="fn-info">
-          <div class="fn-title"><!-- ✏️ Primera Forma Normal --></div>
+          <div class="fn-title"><p>Primera forma</p></div>
           <div class="fn-rule">
             <i class="fas fa-check-circle"></i>
-            <!-- ✏️ Escribe la regla de la 1FN en una línea -->
+            <p>La Primera Forma Normal (1FN) es el paso fundamental y obligatorio para 
+              comenzar a organizar una base de datos relacional de manera eficiente. Su objetivo 
+              principal es eliminar la redundancia y evitar que la base de datos se vuelva un caos difícil de consultar.
+              <br>Para que una tabla cumpla con la 1FN, debe cumplir estrictamente con tres reglas:</p>
           </div>
           <p style="color:var(--text-2); font-size:.95rem">
-            <!-- ✏️ Explica con tus propias palabras qué es la 1FN
-                     y qué problema resuelve en su caso -->
+            En nuestro caso, la tabla original viola la 1FN porque las columnas <strong>productos</strong> y <strong>cantidades</strong> contienen varios valores separados por coma. Para resolverlo, descomponemos cada pedido en tantas filas como productos tenga, de modo que cada celda contenga un solo valor atómico.
           </p>
         </div>
       </div>
@@ -641,22 +681,22 @@
         <div class="step">
           <div class="step-num">1</div>
           <div class="step-body">
-            <div class="step-title"><!-- ✏️ Título del paso 1 --></div>
-            <p><!-- ✏️ Descripción del paso 1 aplicado a su caso --></p>
+            <div class="step-title"><p>Los atributos deben ser atómicos (Valores Únicos)</p></div>
+            <p>Hay multiples datos en la columna productos y cantidades </p>
           </div>
         </div>
         <div class="step">
           <div class="step-num">2</div>
           <div class="step-body">
-            <div class="step-title"><!-- ✏️ Título del paso 2 --></div>
-            <p><!-- ✏️ Descripción del paso 2 aplicado a su caso --></p>
+            <div class="step-title">No deben existir grupos repetitivos</div>
+            <p>Cada producto de un pedido pasa a ser una fila independiente, eliminando los grupos repetitivos de las columnas productos y cantidades.</p>
           </div>
         </div>
         <div class="step">
           <div class="step-num">3</div>
           <div class="step-body">
-            <div class="step-title"><!-- ✏️ Título del paso 3 --></div>
-            <p><!-- ✏️ Descripción del paso 3 aplicado a su caso --></p>
+            <div class="step-title">Cada fila debe ser única (Clave Primaria)</div>
+            <p>La clave primaria pasa a ser compuesta: <strong>id_pedido + id_producto</strong>. Así cada fila se identifica de forma única y podemos tener varios productos por pedido sin duplicar información.</p>
           </div>
         </div>
         <!-- ✏️ Agrega más pasos si tu caso los necesita -->
@@ -668,17 +708,118 @@
             <tr>
               <!-- ✏️ Escribe los encabezados de tu tabla en 1FN.
                        Recuerda: la PK es compuesta, márcala con * -->
-              <th>campo_pk_1 *</th>
-              <th>campo_pk_2 *</th>
-              <th>campo_3</th>
-              <th>campo_4</th>
+              <th>id_pedido *</th>
+              <th>producto *</th>
+              <th>cliente</th>
+              <th>teléfono</th>
+              <th>dirección</th>
+              <th>vendedor</th>
+              <th>cantidad</th>
+              <th>barrio_ruta</th>
+              <th>total</th>
             </tr>
           </thead>
           <tbody>
             <!-- ✏️ Llena con los datos de tu caso ya en 1FN.
                      Usa class="pk" en las celdas de clave primaria -->
-            <tr class="row-hint">
-              <td colspan="4">✏️ Llena esta tabla con los datos de tu caso en 1FN</td>
+            <tr>
+              <td class="pk">P001</td>
+              <td class="pk">Manzana</td>
+              <td>Doña María</td>
+              <td>3001234567</td>
+              <td>Calle 1 #2-3</td>
+              <td>Carlos M.</td>
+              <td>10</td>
+              <td>Olaya Herrera</td>
+              <td>$45.000</td>
+            </tr>
+            <tr>
+              <td class="pk">P001</td>
+              <td class="pk">Pera</td>
+              <td>Doña María</td>
+              <td>3001234567</td>
+              <td>Calle 1 #2-3</td>
+              <td>Carlos M.</td>
+              <td>5</td>
+              <td>Olaya Herrera</td>
+              <td>$45.000</td>
+            </tr>
+            <tr>
+              <td class="pk">P002</td>
+              <td class="pk">Limón</td>
+              <td>Don José</td>
+              <td>3007654321</td>
+              <td>Cra 4 #5-6</td>
+              <td>Ana L.</td>
+              <td>8</td>
+              <td>Bosque</td>
+              <td>$36.000</td>
+            </tr>
+            <tr>
+              <td class="pk">P002</td>
+              <td class="pk">Naranja</td>
+              <td>Don José</td>
+              <td>3007654321</td>
+              <td>Cra 4 #5-6</td>
+              <td>Ana L.</td>
+              <td>12</td>
+              <td>Bosque</td>
+              <td>$36.000</td>
+            </tr>
+            <tr>
+              <td class="pk">P003</td>
+              <td class="pk">Papa</td>
+              <td>Doña María</td>
+              <td>3001234567</td>
+              <td>Calle 1 #2-3</td>
+              <td>Carlos M.</td>
+              <td>15</td>
+              <td>Olaya Herrera</td>
+              <td>$52.000</td>
+            </tr>
+            <tr>
+              <td class="pk">P003</td>
+              <td class="pk">Zanahoria</td>
+              <td>Doña María</td>
+              <td>3001234567</td>
+              <td>Calle 1 #2-3</td>
+              <td>Carlos M.</td>
+              <td>10</td>
+              <td>Olaya Herrera</td>
+              <td>$52.000</td>
+            </tr>
+            <tr>
+              <td class="pk">P003</td>
+              <td class="pk">Cebolla</td>
+              <td>Doña María</td>
+              <td>3001234567</td>
+              <td>Calle 1 #2-3</td>
+              <td>Carlos M.</td>
+              <td>8</td>
+              <td>Olaya Herrera</td>
+              <td>$52.000</td>
+            </tr>
+            <tr>
+              <td class="pk">P004</td>
+              <td class="pk">Manzana</td>
+              <td>Surtifruta</td>
+              <td>3059876543</td>
+              <td>Av Kennedy #10-20</td>
+              <td>Pedro R.</td>
+              <td>20</td>
+              <td>Centro</td>
+              <td>$85.000</td>
+            </tr>
+            <tr>
+              <td class="pk">P004</td>
+              <td class="pk">Naranja</td>
+              <td>Surtifruta</td>
+              <td>3059876543</td>
+              <td>Av Kennedy #10-20</td>
+              <td>Pedro R.</td>
+              <td>30</td>
+              <td>Centro</td>
+              <td>$85.000</td>
             </tr>
           </tbody>
         </table>
@@ -686,7 +827,7 @@
 
       <div class="callout info">
         <div class="callout-label"><i class="fas fa-check"></i> Resultado 1FN</div>
-        <p><!-- ✏️ Concluye: ¿qué lograron con la 1FN? ¿qué problema queda pendiente? --></p>
+        <p>Logramos que cada celda contenga un solo valor atómico y cada fila sea única gracias a la clave compuesta <strong>(id_pedido + id_producto)</strong>. Sin embargo, aún hay datos repetidos: el cliente, el vendedor y el barrio aparecen una y otra vez en varias filas. Eso lo resolveremos en la <strong>2FN</strong> eliminando las dependencias parciales.</p>
       </div>
     </div>
 
@@ -705,13 +846,13 @@
       <div class="fn-header">
         <div class="fn-number" style="color: #657eff;">2°</div>
         <div class="fn-info">
-          <div class="fn-title"><!-- ✏️ Segunda Forma Normal --></div>
+          <div class="fn-title">Segunda Forma Normal</div>
           <div class="fn-rule">
             <i class="fas fa-check-circle"></i>
-            <!-- ✏️ Escribe la regla de la 2FN en una línea -->
+            <p>La tabla debe estar en 1FN y cada atributo no clave debe depender de toda la clave primaria, no solo de una parte.</p>
           </div>
           <p style="color:var(--text-2); font-size:.95rem">
-            <!-- ✏️ Explica con tus propias palabras qué es la 2FN -->
+            La 2FN elimina las <strong>dependencias parciales</strong>. En nuestra tabla 1FN, la clave es compuesta <strong>(id_pedido + producto)</strong>, pero columnas como <em>cliente, teléfono, dirección, vendedor, barrio_ruta</em> y <em>total</em> solo dependen de <strong>id_pedido</strong>, no del producto. Las separamos en dos tablas.
           </p>
         </div>
       </div>
@@ -719,52 +860,64 @@
       <div class="callout warn">
         <div class="callout-label"><i class="fas fa-search"></i> Dependencias parciales en su tabla</div>
         <p>
-          <!-- ✏️ Enumera las dependencias parciales que encontraron.
-                   Ejemplo de formato:
-                   nombre_cliente depende solo de nit_cliente, no de cod_producto. -->
+          En la tabla 1FN con clave compuesta <strong>(id_pedido + producto)</strong>:<br>
+          → <strong>cliente, teléfono, dirección, vendedor, barrio_ruta, total</strong> dependen solo de <strong>id_pedido</strong>, no del producto.<br>
+          → <strong>cantidad</strong> es el único atributo que depende de la clave completa (id_pedido + producto).
         </p>
       </div>
 
-      <!-- ✏️ Crea una <div> por cada tabla resultante de la 2FN.
-               Usa la clase dict-table-title para el nombre de la tabla.
-               Agrega tantas tablas como entidades separaste. -->
       <div class="grid-2" style="margin-top:2rem; gap:1.5rem">
 
         <div>
-          <div class="dict-table-title"><!-- ✏️ NOMBRE_TABLA_1 --></div>
+          <div class="dict-table-title">PEDIDOS</div>
           <div class="table-wrap">
             <table>
               <thead>
                 <tr>
-                  <!-- ✏️ Encabezados de la tabla 1 -->
-                  <th>campo_pk</th><th>campo_2</th>
+                  <th>id_pedido (PK)</th><th>cliente</th><th>teléfono</th><th>dirección</th><th>vendedor</th><th>barrio_ruta</th><th>total</th>
                 </tr>
               </thead>
               <tbody>
-                <tr class="row-hint"><td colspan="2">✏️ Llena con datos de tu caso</td></tr>
+                <tr>
+                  <td class="pk">P001</td><td>Doña María</td><td>3001234567</td><td>Calle 1 #2-3</td><td>Carlos M.</td><td>Olaya Herrera</td><td>$45.000</td>
+                </tr>
+                <tr>
+                  <td class="pk">P002</td><td>Don José</td><td>3007654321</td><td>Cra 4 #5-6</td><td>Ana L.</td><td>Bosque</td><td>$36.000</td>
+                </tr>
+                <tr>
+                  <td class="pk">P003</td><td>Doña María</td><td>3001234567</td><td>Calle 1 #2-3</td><td>Carlos M.</td><td>Olaya Herrera</td><td>$52.000</td>
+                </tr>
+                <tr>
+                  <td class="pk">P004</td><td>Surtifruta</td><td>3059876543</td><td>Av Kennedy #10-20</td><td>Pedro R.</td><td>Centro</td><td>$85.000</td>
+                </tr>
               </tbody>
             </table>
           </div>
         </div>
 
         <div>
-          <div class="dict-table-title"><!-- ✏️ NOMBRE_TABLA_2 --></div>
+          <div class="dict-table-title">DETALLE_PEDIDO</div>
           <div class="table-wrap">
             <table>
               <thead>
                 <tr>
-                  <!-- ✏️ Encabezados de la tabla 2 -->
-                  <th>campo_pk</th><th>campo_2</th>
+                  <th>id_pedido (PK/FK)</th><th>producto (PK)</th><th>cantidad</th>
                 </tr>
               </thead>
               <tbody>
-                <tr class="row-hint"><td colspan="2">✏️ Llena con datos de tu caso</td></tr>
+                <tr><td class="pk">P001</td><td class="pk">Manzana</td><td>10</td></tr>
+                <tr><td class="pk">P001</td><td class="pk">Pera</td><td>5</td></tr>
+                <tr><td class="pk">P002</td><td class="pk">Limón</td><td>8</td></tr>
+                <tr><td class="pk">P002</td><td class="pk">Naranja</td><td>12</td></tr>
+                <tr><td class="pk">P003</td><td class="pk">Papa</td><td>15</td></tr>
+                <tr><td class="pk">P003</td><td class="pk">Zanahoria</td><td>10</td></tr>
+                <tr><td class="pk">P003</td><td class="pk">Cebolla</td><td>8</td></tr>
+                <tr><td class="pk">P004</td><td class="pk">Manzana</td><td>20</td></tr>
+                <tr><td class="pk">P004</td><td class="pk">Naranja</td><td>30</td></tr>
               </tbody>
             </table>
           </div>
         </div>
-
-        <!-- ✏️ Duplica estos bloques para más tablas -->
 
       </div>
     </div>
@@ -784,80 +937,159 @@
       <div class="fn-header">
         <div class="fn-number" style="color: #657eff;">3°</div>
         <div class="fn-info">
-          <div class="fn-title"><!-- ✏️ Tercera Forma Normal --></div>
+          <div class="fn-title">Tercera Forma Normal</div>
           <div class="fn-rule">
             <i class="fas fa-check-circle"></i>
-            <!-- ✏️ Escribe la regla de la 3FN en una línea -->
+            La tabla debe estar en 2FN y ningún atributo no clave debe depender <strong>transitivamente</strong> de la clave primaria.
           </div>
           <p style="color:var(--text-2); font-size:.95rem">
-            <!-- ✏️ Explica con tus propias palabras qué es la 3FN -->
+            La 3FN elimina las <strong>dependencias transitivas</strong>. En nuestra tabla PEDIDOS de 2FN, <em>teléfono</em> y <em>dirección</em> dependen del <strong>cliente</strong>, no directamente del pedido. Y <em>barrio_ruta</em> depende del <strong>vendedor</strong>. Separamos creando las tablas CLIENTE y VENDEDOR.
           </p>
         </div>
       </div>
 
       <div class="callout warn">
-        <div class="callout-label"><i class="fas fa-search"></i> Dependencia transitiva detectada</div>
+        <div class="callout-label"><i class="fas fa-search"></i> Dependencias transitivas detectadas</div>
         <p>
-          <!-- ✏️ Describe la cadena de dependencia transitiva que encontraron.
-                   Ejemplo de formato:
-                   En la tabla VENDEDORES:
-                   id_vendedor → cargo → salario_base
-                   (el salario depende del cargo, no del vendedor directamente) -->
+          En la tabla PEDIDOS (2FN):<br>
+          → <strong>id_pedido → cliente → teléfono, dirección</strong><br>
+          &nbsp;&nbsp;(teléfono y dirección dependen del cliente, no del pedido)<br>
+          → <strong>id_pedido → vendedor → barrio_ruta</strong><br>
+          &nbsp;&nbsp;(el barrio depende del vendedor asignado, no del pedido directamente)
         </p>
       </div>
 
       <div class="grid-2" style="margin-top:2rem; gap:1.5rem">
-        <!-- ✏️ Pon aquí las tablas del modelo final 3FN -->
         <div>
-          <div class="dict-table-title"><!-- ✏️ TABLA NUEVA (resultado de separar la transitiva) --></div>
+          <div class="dict-table-title">CLIENTE</div>
           <div class="table-wrap">
             <table>
               <thead>
-                <tr><th>campo_pk</th><th>campo_2</th></tr>
+                <tr><th>id_cliente (PK)</th><th>nombre</th><th>teléfono</th><th>dirección</th></tr>
               </thead>
               <tbody>
-                <tr class="row-hint"><td colspan="2">✏️ Datos de la tabla nueva</td></tr>
+                <tr><td class="pk">1</td><td>Doña María</td><td>3001234567</td><td>Calle 1 #2-3</td></tr>
+                <tr><td class="pk">2</td><td>Don José</td><td>3007654321</td><td>Cra 4 #5-6</td></tr>
+                <tr><td class="pk">3</td><td>Surtifruta</td><td>3059876543</td><td>Av Kennedy #10-20</td></tr>
               </tbody>
             </table>
           </div>
         </div>
         <div>
-          <div class="dict-table-title"><!-- ✏️ TABLA ACTUALIZADA (la que se modificó) --></div>
+          <div class="dict-table-title">VENDEDOR</div>
           <div class="table-wrap">
             <table>
               <thead>
-                <tr><th>campo_pk</th><th>campo_2</th><th>campo_fk (FK)</th></tr>
+                <tr><th>id_vendedor (PK)</th><th>nombre</th><th>barrio_ruta</th></tr>
               </thead>
               <tbody>
-                <tr class="row-hint"><td colspan="3">✏️ Datos de la tabla actualizada</td></tr>
+                <tr><td class="pk">1</td><td>Carlos M.</td><td>Olaya Herrera</td></tr>
+                <tr><td class="pk">2</td><td>Ana L.</td><td>Bosque</td></tr>
+                <tr><td class="pk">3</td><td>Pedro R.</td><td>Centro</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div>
+          <div class="dict-table-title">PRODUCTO</div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>id_producto (PK)</th><th>nombre</th><th>precio_unitario</th></tr>
+              </thead>
+              <tbody>
+                <tr><td class="pk">1</td><td>Manzana</td><td>$2.000</td></tr>
+                <tr><td class="pk">2</td><td>Pera</td><td>$1.500</td></tr>
+                <tr><td class="pk">3</td><td>Limón</td><td>$800</td></tr>
+                <tr><td class="pk">4</td><td>Naranja</td><td>$1.200</td></tr>
+                <tr><td class="pk">5</td><td>Papa</td><td>$1.000</td></tr>
+                <tr><td class="pk">6</td><td>Zanahoria</td><td>$700</td></tr>
+                <tr><td class="pk">7</td><td>Cebolla</td><td>$900</td></tr>
               </tbody>
             </table>
           </div>
         </div>
       </div>
 
-      <!-- ✏️ BLOQUE SQL:
-               Escribe aquí el CREATE TABLE de TODAS las tablas
-               de tu modelo final en PostgreSQL.
-               Respeta el orden: primero las tablas sin FK,
-               luego las que las referencian. -->
+      <div class="grid-2" style="margin-top:1.5rem; gap:1.5rem">
+        <div>
+          <div class="dict-table-title">PEDIDOS</div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>id_pedido (PK)</th><th>id_cliente (FK)</th><th>id_vendedor (FK)</th><th>total</th></tr>
+              </thead>
+              <tbody>
+                <tr><td class="pk">1</td><td class="fk">1</td><td class="fk">1</td><td>$45.000</td></tr>
+                <tr><td class="pk">2</td><td class="fk">2</td><td class="fk">2</td><td>$36.000</td></tr>
+                <tr><td class="pk">3</td><td class="fk">1</td><td class="fk">1</td><td>$52.000</td></tr>
+                <tr><td class="pk">4</td><td class="fk">3</td><td class="fk">3</td><td>$85.000</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div>
+          <div class="dict-table-title">DETALLE_PEDIDO</div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>id_detalle (PK)</th><th>id_pedido (FK)</th><th>id_producto (FK)</th><th>cantidad</th></tr>
+              </thead>
+              <tbody>
+                <tr><td class="pk">1</td><td class="fk">1</td><td class="fk">1</td><td>10</td></tr>
+                <tr><td class="pk">2</td><td class="fk">1</td><td class="fk">2</td><td>5</td></tr>
+                <tr><td class="pk">3</td><td class="fk">2</td><td class="fk">3</td><td>8</td></tr>
+                <tr><td class="pk">4</td><td class="fk">2</td><td class="fk">4</td><td>12</td></tr>
+                <tr><td class="pk">5</td><td class="fk">3</td><td class="fk">5</td><td>15</td></tr>
+                <tr><td class="pk">6</td><td class="fk">3</td><td class="fk">6</td><td>10</td></tr>
+                <tr><td class="pk">7</td><td class="fk">3</td><td class="fk">7</td><td>8</td></tr>
+                <tr><td class="pk">8</td><td class="fk">4</td><td class="fk">1</td><td>20</td></tr>
+                <tr><td class="pk">9</td><td class="fk">4</td><td class="fk">4</td><td>30</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
       <div class="sql-block" style="margin-top:2rem">
         <div class="sql-header">
           <div class="sql-label">PostgreSQL · Modelo Final 3FN</div>
           <div class="sql-dots"><span></span><span></span><span></span></div>
         </div>
         <pre>
-<span class="cm">-- ✏️ Escribe aquí el SQL de tu modelo completo</span>
-<span class="cm">-- Ejemplo de estructura:</span>
-
-<span class="kw">CREATE TABLE</span> <span class="tb">nombre_tabla</span> (
-  campo_pk    <span class="ty">VARCHAR(10)</span>    <span class="cn">PRIMARY KEY</span>,
-  campo_2     <span class="ty">VARCHAR(100)</span>   <span class="cn">NOT NULL</span>,
-  campo_fk    <span class="ty">VARCHAR(10)</span>    <span class="cn">REFERENCES</span> <span class="tb">otra_tabla</span>(campo_pk)
+<span class="kw">CREATE TABLE</span> <span class="tb">CLIENTE</span> (
+  id_cliente   <span class="ty">SERIAL</span>       <span class="cn">PRIMARY KEY</span>,
+  nombre       <span class="ty">VARCHAR(60)</span>   <span class="cn">NOT NULL</span>,
+  telefono     <span class="ty">VARCHAR(15)</span>   <span class="cn">NOT NULL</span>,
+  direccion    <span class="ty">VARCHAR(100)</span>  <span class="cn">NOT NULL</span>
 );
 
-<span class="cm">-- ✏️ Continúa con las demás tablas...</span>
-        </pre>
+<span class="kw">CREATE TABLE</span> <span class="tb">VENDEDOR</span> (
+  id_vendedor  <span class="ty">SERIAL</span>       <span class="cn">PRIMARY KEY</span>,
+  nombre       <span class="ty">VARCHAR(40)</span>   <span class="cn">NOT NULL</span>,
+  barrio_ruta  <span class="ty">VARCHAR(60)</span>   <span class="cn">NOT NULL</span>
+);
+
+<span class="kw">CREATE TABLE</span> <span class="tb">PRODUCTO</span> (
+  id_producto     <span class="ty">SERIAL</span>       <span class="cn">PRIMARY KEY</span>,
+  nombre          <span class="ty">VARCHAR(40)</span>   <span class="cn">NOT NULL</span>,
+  precio_unitario <span class="ty">NUMERIC(10,2)</span> <span class="cn">NOT NULL</span> <span class="cn">CHECK</span>(precio_unitario &gt; 0)
+);
+
+<span class="kw">CREATE TABLE</span> <span class="tb">PEDIDOS</span> (
+  id_pedido    <span class="ty">SERIAL</span>       <span class="cn">PRIMARY KEY</span>,
+  id_cliente   <span class="ty">INTEGER</span>      <span class="cn">NOT NULL</span> <span class="cn">REFERENCES</span> <span class="tb">CLIENTE</span>(id_cliente),
+  id_vendedor  <span class="ty">INTEGER</span>      <span class="cn">NOT NULL</span> <span class="cn">REFERENCES</span> <span class="tb">VENDEDOR</span>(id_vendedor),
+  total        <span class="ty">NUMERIC(10,2)</span> <span class="cn">NOT NULL</span>
+);
+
+<span class="kw">CREATE TABLE</span> <span class="tb">DETALLE_PEDIDO</span> (
+  id_detalle   <span class="ty">SERIAL</span>       <span class="cn">PRIMARY KEY</span>,
+  id_pedido    <span class="ty">INTEGER</span>      <span class="cn">NOT NULL</span> <span class="cn">REFERENCES</span> <span class="tb">PEDIDOS</span>(id_pedido),
+  id_producto  <span class="ty">INTEGER</span>      <span class="cn">NOT NULL</span> <span class="cn">REFERENCES</span> <span class="tb">PRODUCTO</span>(id_producto),
+  cantidad     <span class="ty">INTEGER</span>      <span class="cn">NOT NULL</span> <span class="cn">CHECK</span>(cantidad &gt; 0),
+  <span class="cn">UNIQUE</span> (id_pedido, id_producto)
+);</pre>
       </div>
 
     </div><!-- fin fn3 -->
@@ -900,21 +1132,19 @@
     <h2 class="section-title">Diccionario de Datos</h2>
 
     <p class="section-lead">
-      <!-- ✏️ Explica qué es un diccionario de datos y por qué es importante -->
+      El diccionario de datos documenta cada campo de cada tabla del modelo final 3FN: su tipo, tamaño, restricciones y significado. Sirve como guía para desarrolladores y administradores de la base de datos.
     </p>
 
     <div class="callout info">
       <div class="callout-label"><i class="fas fa-lightbulb"></i> Definición</div>
-      <p><!-- ✏️ Escribe la definición formal de diccionario de datos --></p>
+      <p>Es un catálogo estructurado que describe todos los elementos de datos del esquema, incluyendo nombre, tipo, longitud, valores permitidos, clave primaria/foránea y una descripción funcional. Facilita el mantenimiento, la integración y la comunicación entre el equipo técnico y de negocio.</p>
     </div>
 
-
-    <!-- ════ TABLA 1 del diccionario ════
-         ✏️ Repite este bloque por cada tabla de tu modelo -->
+    <!-- ════ CLIENTE ════ -->
     <div class="dict-section" style="margin-top:2.5rem">
       <div class="dict-table-title">
         <i class="fas fa-table" style="margin-right:.4rem"></i>
-        <!-- ✏️ NOMBRE_TABLA -->
+        CLIENTE
       </div>
       <div class="table-wrap">
         <table>
@@ -926,32 +1156,56 @@
             </tr>
           </thead>
           <tbody>
-            <!-- ✏️ Una fila por cada campo de esta tabla.
-                     Ejemplo de fila completa:
             <tr>
-              <td class="code">id_producto</td>
-              <td class="code">VARCHAR</td>
-              <td>10</td>
+              <td class="code">id_cliente</td>
+              <td class="code">SERIAL</td>
+              <td>—</td>
               <td><span class="badge badge-no">NO</span></td>
               <td><span class="badge badge-pk">PK</span></td>
               <td>—</td>
               <td>—</td>
-              <td>Código único del producto</td>
+              <td>Identificador único del cliente (autoincremental)</td>
             </tr>
-            -->
-            <tr class="row-hint">
-              <td colspan="8">✏️ Reemplaza con los campos de tu primera tabla</td>
+            <tr>
+              <td class="code">nombre</td>
+              <td class="code">VARCHAR</td>
+              <td>60</td>
+              <td><span class="badge badge-no">NO</span></td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>Nombre completo del cliente</td>
+            </tr>
+            <tr>
+              <td class="code">telefono</td>
+              <td class="code">VARCHAR</td>
+              <td>15</td>
+              <td><span class="badge badge-no">NO</span></td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>Número de teléfono de contacto</td>
+            </tr>
+            <tr>
+              <td class="code">direccion</td>
+              <td class="code">VARCHAR</td>
+              <td>100</td>
+              <td><span class="badge badge-no">NO</span></td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>Dirección de domicilio o negocio</td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
 
-    <!-- ════ TABLA 2 del diccionario ════ -->
+    <!-- ════ VENDEDOR ════ -->
     <div class="dict-section">
       <div class="dict-table-title">
         <i class="fas fa-table" style="margin-right:.4rem"></i>
-        <!-- ✏️ NOMBRE_TABLA_2 -->
+        VENDEDOR
       </div>
       <div class="table-wrap">
         <table>
@@ -963,15 +1217,213 @@
             </tr>
           </thead>
           <tbody>
-            <tr class="row-hint">
-              <td colspan="8">✏️ Reemplaza con los campos de tu segunda tabla</td>
+            <tr>
+              <td class="code">id_vendedor</td>
+              <td class="code">SERIAL</td>
+              <td>—</td>
+              <td><span class="badge badge-no">NO</span></td>
+              <td><span class="badge badge-pk">PK</span></td>
+              <td>—</td>
+              <td>—</td>
+              <td>Identificador único del vendedor (autoincremental)</td>
+            </tr>
+            <tr>
+              <td class="code">nombre</td>
+              <td class="code">VARCHAR</td>
+              <td>40</td>
+              <td><span class="badge badge-no">NO</span></td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>Nombre del vendedor</td>
+            </tr>
+            <tr>
+              <td class="code">barrio_ruta</td>
+              <td class="code">VARCHAR</td>
+              <td>60</td>
+              <td><span class="badge badge-no">NO</span></td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>Barrio o ruta asignada al vendedor</td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
 
-    <!-- ✏️ Copia y pega los bloques anteriores para cada tabla adicional -->
+    <!-- ════ PRODUCTO ════ -->
+    <div class="dict-section">
+      <div class="dict-table-title">
+        <i class="fas fa-table" style="margin-right:.4rem"></i>
+        PRODUCTO
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Campo</th><th>Tipo</th><th>Tamaño</th>
+              <th>Nulo</th><th>Clave</th><th>FK</th>
+              <th>CHECK / Default</th><th>Descripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="code">id_producto</td>
+              <td class="code">SERIAL</td>
+              <td>—</td>
+              <td><span class="badge badge-no">NO</span></td>
+              <td><span class="badge badge-pk">PK</span></td>
+              <td>—</td>
+              <td>—</td>
+              <td>Identificador único del producto (autoincremental)</td>
+            </tr>
+            <tr>
+              <td class="code">nombre</td>
+              <td class="code">VARCHAR</td>
+              <td>40</td>
+              <td><span class="badge badge-no">NO</span></td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>Nombre del producto</td>
+            </tr>
+            <tr>
+              <td class="code">precio_unitario</td>
+              <td class="code">NUMERIC</td>
+              <td>10,2</td>
+              <td><span class="badge badge-no">NO</span></td>
+              <td>—</td>
+              <td>—</td>
+              <td>CHECK (precio_unitario &gt; 0)</td>
+              <td>Precio por unidad del producto</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ════ PEDIDOS ════ -->
+    <div class="dict-section">
+      <div class="dict-table-title">
+        <i class="fas fa-table" style="margin-right:.4rem"></i>
+        PEDIDOS
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Campo</th><th>Tipo</th><th>Tamaño</th>
+              <th>Nulo</th><th>Clave</th><th>FK</th>
+              <th>CHECK / Default</th><th>Descripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="code">id_pedido</td>
+              <td class="code">SERIAL</td>
+              <td>—</td>
+              <td><span class="badge badge-no">NO</span></td>
+              <td><span class="badge badge-pk">PK</span></td>
+              <td>—</td>
+              <td>—</td>
+              <td>Identificador único del pedido (autoincremental)</td>
+            </tr>
+            <tr>
+              <td class="code">id_cliente</td>
+              <td class="code">INTEGER</td>
+              <td>—</td>
+              <td><span class="badge badge-no">NO</span></td>
+              <td>—</td>
+              <td><span class="badge badge-fk">FK → CLIENTE</span></td>
+              <td>—</td>
+              <td>Cliente que realizó el pedido</td>
+            </tr>
+            <tr>
+              <td class="code">id_vendedor</td>
+              <td class="code">INTEGER</td>
+              <td>—</td>
+              <td><span class="badge badge-no">NO</span></td>
+              <td>—</td>
+              <td><span class="badge badge-fk">FK → VENDEDOR</span></td>
+              <td>—</td>
+              <td>Vendedor que atendió el pedido</td>
+            </tr>
+            <tr>
+              <td class="code">total</td>
+              <td class="code">NUMERIC</td>
+              <td>10,2</td>
+              <td><span class="badge badge-no">NO</span></td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>Valor total del pedido</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ════ DETALLE_PEDIDO ════ -->
+    <div class="dict-section">
+      <div class="dict-table-title">
+        <i class="fas fa-table" style="margin-right:.4rem"></i>
+        DETALLE_PEDIDO
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Campo</th><th>Tipo</th><th>Tamaño</th>
+              <th>Nulo</th><th>Clave</th><th>FK</th>
+              <th>CHECK / Default</th><th>Descripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="code">id_detalle</td>
+              <td class="code">SERIAL</td>
+              <td>—</td>
+              <td><span class="badge badge-no">NO</span></td>
+              <td><span class="badge badge-pk">PK</span></td>
+              <td>—</td>
+              <td>—</td>
+              <td>Identificador único del detalle (autoincremental)</td>
+            </tr>
+            <tr>
+              <td class="code">id_pedido</td>
+              <td class="code">INTEGER</td>
+              <td>—</td>
+              <td><span class="badge badge-no">NO</span></td>
+              <td>—</td>
+              <td><span class="badge badge-fk">FK → PEDIDOS</span></td>
+              <td>—</td>
+              <td>Pedido al que pertenece este detalle</td>
+            </tr>
+            <tr>
+              <td class="code">id_producto</td>
+              <td class="code">INTEGER</td>
+              <td>—</td>
+              <td><span class="badge badge-no">NO</span></td>
+              <td>—</td>
+              <td><span class="badge badge-fk">FK → PRODUCTO</span></td>
+              <td>—</td>
+              <td>Producto incluido en el pedido</td>
+            </tr>
+            <tr>
+              <td class="code">cantidad</td>
+              <td class="code">INTEGER</td>
+              <td>—</td>
+              <td><span class="badge badge-no">NO</span></td>
+              <td>—</td>
+              <td>—</td>
+              <td>CHECK (cantidad &gt; 0)</td>
+              <td>Cantidad del producto en el pedido</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
   </div>
 </section>
@@ -999,11 +1451,13 @@
 
     <div class="reflection-card">
       <div class="reflection-text">
-        <p><!-- ✏️ Párrafo 1: ¿Qué aprendieron sobre normalización? --></p>
+        <p>✏️ La normalizacion nos ayuda a hacer mas consistentes nuestras bases de datos y organizar los datos de forma estructurada 
+          reduciendo la redundancia y mejorando la integridad.</p>
         <br>
-        <p><!-- ✏️ Párrafo 2: ¿Qué fue lo más difícil del proceso? --></p>
+        <p>✏️ Comprender como al separar datos se facilitan las consultas que se pueden realizar.</p>
         <br>
-        <p><!-- ✏️ Párrafo 3: ¿Cómo aplicarían esto en un proyecto real de software? --></p>
+        <p>✏️ Estructurando la informacion de manera detallada, identificando las llaves primarias y foraneas, 
+          eliminar dependencias parciales y eliminamos dependencia transitiva. </p>
       </div>
     </div>
 
@@ -1015,12 +1469,7 @@
       </div>
       <div class="card">
         <div class="card-icon"><i class="fas fa-star"></i></div>
-        <div class="card-title"><!-- ✏️ Lección del integrante 2 --></div>
-        <p><!-- ✏️ En máximo 2 oraciones: la lección más importante --></p>
-      </div>
-      <div class="card">
-        <div class="card-icon"><i class="fas fa-star"></i></div>
-        <div class="card-title"><!-- ✏️ Lección del integrante 3 --></div>
+        <div class="card-title">Leccion Juan Sebastian</div>
         <p><!-- ✏️ En máximo 2 oraciones: la lección más importante --></p>
       </div>
     </div>
