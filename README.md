@@ -4,7 +4,7 @@
 
  Aprendemos a estructurar, limpiar y organizar la información aplicando las formas normales para evitar redundancia y garantizar la integridad de los datos.
 
-## ✏️ Presentacion realizada por Juan Sebastian Cardona y Luis Alonso Cely
+#### ✏️ Presentacion realizada por Juan Sebastian Cardona y Luis Alonso Cely
 
 - Hablamos sobre el por qué normalizar una base de datos
 - ¿Qué es la redundancia de datos?
